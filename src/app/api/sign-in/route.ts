@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
 import bcrypt from "bcrypt"
-import { env } from "@/lib/env"
 import { z } from "zod"
 import { db } from "@/lib/db"
 
