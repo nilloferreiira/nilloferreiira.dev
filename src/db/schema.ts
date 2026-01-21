@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, varchar, timestamp, serial } from "drizzle-orm/pg-core"
+import { pgTable, uuid, text, varchar, timestamp, serial, boolean } from "drizzle-orm/pg-core"
 
 export const users = pgTable("users", {
 	id: uuid("id").defaultRandom().primaryKey(),
@@ -33,4 +33,16 @@ export const experiences = pgTable("experiences", {
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 	updatedAt: timestamp("updated_at").defaultNow().notNull(),
 	deletedAt: timestamp("deleted_at")
+})
+
+export const sessions = pgTable("sessions", {
+	id: uuid("id").defaultRandom().primaryKey(),
+	userId: uuid("user_id").notNull(),
+	// token field is the same as id here, but kept for clarity if you want to
+	// separate them later. For now we'll reference session by `id`.
+	createdAt: timestamp("created_at").defaultNow().notNull(),
+	expiresAt: timestamp("expires_at"),
+	valid: boolean("valid").default(true).notNull(),
+	ip: varchar("ip"),
+	userAgent: text("user_agent")
 })

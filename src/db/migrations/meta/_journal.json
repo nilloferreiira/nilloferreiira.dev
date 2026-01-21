@@ -22,6 +22,13 @@
       "when": 1765833621331,
       "tag": "0002_add-position",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1769033916711,
+      "tag": "0003_curvy_warstar",
+      "breakpoints": true
     }
   ]
 }

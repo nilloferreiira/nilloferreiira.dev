@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import bcrypt from "bcrypt"
 import { z } from "zod"
 import { db } from "@/lib/db"
+import { sessions as sessionsTable } from "@/db/schema"
 
 const loginSchema = z.object({
 	email: z.email("Email inválido"),
@@ -11,7 +12,6 @@ const loginSchema = z.object({
 export async function POST(request: NextRequest) {
 	const body = await request.json()
 	const parsedBody = loginSchema.safeParse(body)
-	const sessions = new Set<string>()
 
 	if (!parsedBody.success) {
 		return NextResponse.json({ message: "Dados inválidos", errors: parsedBody.error.message }, { status: 400 })
@@ -34,8 +34,16 @@ export async function POST(request: NextRequest) {
 		return NextResponse.json({ error: "Credenciais inválidas" }, { status: 401 })
 	}
 
+	// create a persistent session in the DB
 	const sessionId = crypto.randomUUID()
-	sessions.add(sessionId)
+	const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days
+	await db.insert(sessionsTable).values({
+		id: sessionId,
+		userId: user.id,
+		expiresAt: expiresAt,
+		userAgent: request.headers.get("user-agent") || undefined,
+		ip: request.headers.get("x-forwarded-for") || undefined
+	})
 
 	const response = NextResponse.json({ ok: true, message: "Login realizado com sucesso" })
 
@@ -44,7 +52,10 @@ export async function POST(request: NextRequest) {
 		value: sessionId,
 		httpOnly: true,
 		sameSite: "lax",
-		path: "/"
+		path: "/",
+		secure: process.env.NODE_ENV === "production",
+		// expire cookie at the same time as the DB session
+		expires: expiresAt
 	})
 
 	return response
