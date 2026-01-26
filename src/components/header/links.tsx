@@ -18,7 +18,7 @@ export function Links() {
 				</span>
 			</a>
 			<a
-				href="https://www.linkedin.com/in/danillo-ferreira-dev/"
+				href="https://www.linkedin.com/in/nilloferreiira/"
 				target="_blank"
 				className="ring-1 ring-zinc-100 rounded-full size-12 p-6 flex items-center justify-center hover:shadow-md hover:shadow-zinc-50/40"
 			>
