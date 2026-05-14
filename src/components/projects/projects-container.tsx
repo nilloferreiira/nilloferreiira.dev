@@ -25,14 +25,7 @@ export function ProjectContainer({ projects }: ProjectsContainerProps) {
 						<Project
 							key={project.id}
 							language={language}
-							project={{
-								id: project.id,
-								title: project.title,
-								description_en: project.description_en,
-								description_pt: project.description_pt,
-								imgSrc: project.imgSrc,
-								url: project.url
-							}}
+							project={project}
 						/>
 					))}
 			</div>

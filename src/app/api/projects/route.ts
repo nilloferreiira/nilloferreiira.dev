@@ -29,7 +29,9 @@ export async function POST(request: NextRequest) {
 				description_en: body.description_en,
 				description_pt: body.description_pt,
 				imgSrc: body.imgSrc,
-				url: body.url
+				url: body.url,
+				category: body.category ?? "personal",
+				tags: body.tags ?? []
 			})
 			.returning()
 
@@ -52,7 +54,9 @@ export async function PUT(request: NextRequest) {
 				description_en: body.description_en,
 				description_pt: body.description_pt,
 				imgSrc: body.imgSrc,
-				url: body.url
+				url: body.url,
+				category: body.category,
+				tags: body.tags
 			})
 			.where(eq(projectsSchema.id, body.id))
 			.returning()

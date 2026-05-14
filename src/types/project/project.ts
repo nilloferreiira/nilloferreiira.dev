@@ -5,4 +5,6 @@ export type Project = {
 	description_pt: string
 	imgSrc: string
 	url: string
+	category: 'personal' | 'freelance' | 'work'
+	tags: string[]
 }
