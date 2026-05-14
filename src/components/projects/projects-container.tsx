@@ -24,9 +24,9 @@ export function ProjectContainer({ projects }: ProjectsContainerProps) {
   const [activeCategory, setActiveCategory] = useState<Category>("all")
   const [activeTags, setActiveTags] = useState<string[]>([])
 
-  const allTags = Array.from(new Set(projects.flatMap((p) => p.tags)))
+  const allTags = Array.from(new Set((projects ?? []).flatMap((p) => p.tags)))
 
-  const filteredProjects = projects.filter((p) => {
+  const filteredProjects = (projects ?? []).filter((p) => {
     const categoryMatch = activeCategory === "all" || p.category === activeCategory
     const tagMatch = activeTags.length === 0 || activeTags.every((t) => p.tags.includes(t))
     return categoryMatch && tagMatch
