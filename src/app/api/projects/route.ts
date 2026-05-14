@@ -55,8 +55,8 @@ export async function PUT(request: NextRequest) {
 				description_pt: body.description_pt,
 				imgSrc: body.imgSrc,
 				url: body.url,
-				category: body.category,
-				tags: body.tags
+				category: body.category ?? "personal",
+				tags: body.tags ?? []
 			})
 			.where(eq(projectsSchema.id, body.id))
 			.returning()
