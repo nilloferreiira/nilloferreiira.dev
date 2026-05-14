@@ -28,6 +28,11 @@
   --animation-typing: typing 8s steps(25) infinite;
   --animation-blink: blink 0.5s step-end infinite alternate;
   --animation-float: float 6s ease-in-out infinite;
+
+  /* Legacy aliases — keep admin section working */
+  --color-bg: hsl(230 20% 12%);             /* was #2c2c2c, maps to surface */
+  --color-shark: hsl(230 20% 16%);          /* was #1d1d1d, maps to surface-raised */
+  --color-text-secondary: hsl(215 15% 55%); /* was #b3b3b3, maps to muted-foreground */
 }
 
 /* Keyframes */

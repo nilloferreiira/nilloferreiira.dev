@@ -9,9 +9,10 @@ interface ExperienceProps {
   description_en: string
   description_pt: string
   index: number
+  bare?: boolean
 }
 
-export function Experience({ language, title_en, title_pt, description_en, description_pt, index }: ExperienceProps) {
+export function Experience({ language, title_en, title_pt, description_en, description_pt, index, bare }: ExperienceProps) {
   function formatLines(text: string) {
     return text.split("\n").filter(Boolean)
   }
@@ -25,7 +26,7 @@ export function Experience({ language, title_en, title_pt, description_en, descr
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.15, duration: 0.5 }}
-      className="glass glass-hover rounded-xl p-6 space-y-4"
+      className={bare ? "space-y-4" : "glass glass-hover rounded-xl p-6 space-y-4"}
     >
       <h2 className="text-foreground font-bold text-2xl lg:text-3xl">{title}</h2>
       <ul className="space-y-2">

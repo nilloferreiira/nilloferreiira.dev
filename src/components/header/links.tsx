@@ -8,7 +8,7 @@ import { tv } from "tailwind-variants"
 const linkButton = tv({
 	variants: {
 		variant: {
-			glass: "glass glass-hover neon-glow rounded-full size-12 p-6 flex items-center justify-center transition-all",
+			glass: "glass glass-hover neon-glow rounded-full size-12 flex items-center justify-center transition-all",
 		},
 	},
 	defaultVariants: {

@@ -25,7 +25,7 @@ export function ExperienceContainer({ experiences }: ExperiencesContainerProps) 
           <div className="absolute inset-[-1px] rounded-xl bg-gradient-to-r from-neon-cyan/50 to-neon-purple/50 blur-sm opacity-30" />
           <div className="relative glass rounded-xl p-6">
             <span className="inline-flex items-center gap-2 text-sm text-primary mb-3">
-              <span className="animate-pulse">🟢</span> Current
+              <span className="animate-pulse">🟢</span> {language === "pt-BR" ? "Atual" : "Current"}
             </span>
             <Experience
               index={0}
@@ -34,6 +34,7 @@ export function ExperienceContainer({ experiences }: ExperiencesContainerProps) 
               title_pt={current.title_pt}
               description_en={current.description_en}
               description_pt={current.description_pt}
+              bare={true}
             />
           </div>
         </div>

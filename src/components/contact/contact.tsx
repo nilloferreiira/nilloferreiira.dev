@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion"
 import { Github, Linkedin, Mail } from "lucide-react"
+import { useLanguage } from "@/hooks/useLanguage"
 
 export function Contact() {
+  const { language } = useLanguage()
   return (
     <motion.section
       initial={{ opacity: 0, y: 20 }}
@@ -13,8 +15,12 @@ export function Contact() {
       className="w-full border-t border-border pt-16 pb-8 flex flex-col items-center gap-8"
     >
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold gradient-text">Let&apos;s connect</h2>
-        <p className="text-muted-foreground">Find me on the web</p>
+        <h2 className="text-3xl font-bold gradient-text">
+          {language === "pt-BR" ? "Vamos nos conectar" : "Let's connect"}
+        </h2>
+        <p className="text-muted-foreground">
+          {language === "pt-BR" ? "Me encontre na internet" : "Find me on the web"}
+        </p>
       </div>
 
       <div className="flex items-center gap-4">
