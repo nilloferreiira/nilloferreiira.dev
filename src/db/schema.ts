@@ -18,6 +18,8 @@ export const projects = pgTable("projects", {
 	imgSrc: varchar("img_src").notNull(),
 	url: varchar("url").notNull(),
 	position: serial("position").notNull(),
+	category: text("category").notNull().default("personal"),
+	tags: text("tags").array().notNull().default([]),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 	updatedAt: timestamp("updated_at").defaultNow().notNull(),
 	deletedAt: timestamp("deleted_at")

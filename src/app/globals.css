@@ -1,52 +1,96 @@
 @import "tailwindcss";
 
 @theme {
-	--color-bg: #2c2c2c;
-	--color-shark: #1d1d1d;
-	--color-text-secondary: #b3b3b3;
-	--color-primary: #7c3aed;
+  /* Surfaces */
+  --color-background: hsl(230 25% 7%);        /* #0d0f1a — near-black blue */
+  --color-surface: hsl(230 20% 12%);           /* glass card bg */
+  --color-surface-raised: hsl(230 20% 16%);    /* elevated surface */
 
-	/* Animações */
-	--animation-typing: typing 8s steps(25) infinite;
-	--animation-blink: blink 0.5s step-end infinite alternate;
+  /* Content */
+  --color-foreground: hsl(210 20% 92%);        /* near-white */
+  --color-foreground-subtle: hsl(215 15% 70%);
+  --color-muted-foreground: hsl(215 15% 55%);
+
+  /* Brand */
+  --color-primary: hsl(170 80% 50%);           /* cyan #0fd6b0 */
+  --color-primary-foreground: hsl(230 25% 7%);
+  --color-accent: hsl(280 70% 60%);            /* purple #a855f7 */
+  --color-neon-cyan: hsl(170 80% 50%);
+  --color-neon-purple: hsl(280 70% 60%);
+  --color-neon-pink: hsl(330 80% 60%);
+
+  /* Borders & inputs */
+  --color-border: hsl(230 15% 20%);
+  --color-glass-border: hsl(230 15% 25%);
+  --color-ring: hsl(170 80% 50%);              /* focus ring = cyan */
+
+  /* Animations */
+  --animation-typing: typing 8s steps(25) infinite;
+  --animation-blink: blink 0.5s step-end infinite alternate;
+  --animation-float: float 6s ease-in-out infinite;
+
+  /* Legacy aliases — keep admin section working */
+  --color-bg: hsl(230 20% 12%);             /* was #2c2c2c, maps to surface */
+  --color-shark: hsl(230 20% 16%);          /* was #1d1d1d, maps to surface-raised */
+  --color-text-secondary: hsl(215 15% 55%); /* was #b3b3b3, maps to muted-foreground */
 }
 
 /* Keyframes */
 @keyframes typing {
-	0% {
-		width: 0;
-	}
-	25% {
-		width: 100%;
-	}
-	50% {
-		width: 100%;
-	}
-	75% {
-		width: 0;
-	}
-	100% {
-		width: 0;
-	}
+  0% { width: 0; }
+  25% { width: 100%; }
+  50% { width: 100%; }
+  75% { width: 0; }
+  100% { width: 0; }
 }
 
 @keyframes blink {
-	50% {
-		border-color: transparent;
-	}
+  50% { border-color: transparent; }
 }
 
-/* Utilitário para animação de digitação */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+/* Typing animation utility */
 .typing-animation {
-	animation: var(--animation-typing), var(--animation-blink);
-	white-space: nowrap;
-	overflow: hidden;
-	border-right: 2px solid var(--color-text-secondary);
+  animation: var(--animation-typing), var(--animation-blink);
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid hsl(215 15% 55%);
 }
 
-/* Tailwind custom utility para mobile */
+/* Glass utilities */
+.glass {
+  background: hsl(230 20% 12% / 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid hsl(230 15% 25% / 0.3);
+}
+
+.glass-hover:hover {
+  background: hsl(230 20% 12% / 0.8);
+  border-color: hsl(170 80% 50% / 0.3);
+}
+
+.neon-glow {
+  box-shadow: 0 0 20px hsl(170 80% 50% / 0.15), 0 0 40px hsl(170 80% 50% / 0.05);
+}
+
+.neon-text {
+  text-shadow: 0 0 20px hsl(170 80% 50% / 0.5);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, hsl(170 80% 50%), hsl(280 70% 60%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Tailwind custom utility for mobile */
 @media (max-width: 768px) {
-	.sm-mx-auto {
-		@apply mx-auto;
-	}
+  .sm-mx-auto {
+    @apply mx-auto;
+  }
 }

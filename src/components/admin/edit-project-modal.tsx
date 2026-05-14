@@ -60,7 +60,9 @@ export function EditProjectModal({ isOpen, onClose, project }: Props) {
 						description_pt: String(form.get("description_pt") ?? ""),
 						description_en: String(form.get("description_en") ?? ""),
 						imgSrc: String(form.get("imgSrc") ?? ""),
-						url: String(form.get("url") ?? "")
+						url: String(form.get("url") ?? ""),
+						category: (String(form.get("category") ?? "personal")) as Project["category"],
+						tags: String(form.get("tags") ?? "").split(",").map(t => t.trim()).filter(Boolean)
 					}
 					handleEditProject(data)
 					onClose()
@@ -110,6 +112,26 @@ export function EditProjectModal({ isOpen, onClose, project }: Props) {
 						<input
 							name="url"
 							defaultValue={project.url}
+							className="w-full p-2 rounded-md bg-shark border border-white/5"
+						/>
+					</div>
+				</div>
+
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+					<div>
+						<label className="block text-sm text-text-secondary mb-1">Category</label>
+						<select name="category" defaultValue={project.category} className="w-full p-2 rounded-md bg-shark border border-white/5">
+							<option value="personal">Personal</option>
+							<option value="freelance">Freelance</option>
+							<option value="work">Work</option>
+						</select>
+					</div>
+					<div>
+						<label className="block text-sm text-text-secondary mb-1">Tags (comma-separated)</label>
+						<input
+							name="tags"
+							defaultValue={project.tags.join(", ")}
+							placeholder="react, typescript, ..."
 							className="w-full p-2 rounded-md bg-shark border border-white/5"
 						/>
 					</div>

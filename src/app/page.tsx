@@ -1,5 +1,6 @@
 "use client"
 
+import { Contact } from "@/components/contact/contact"
 import { ExperienceContainer } from "@/components/experiences/experiences-container"
 import { Header } from "@/components/header/header"
 import { SwitchLanguage } from "@/components/language/switch"
@@ -27,6 +28,7 @@ export default function Home() {
 						<ProjectContainer projects={projects!} />
 					</>
 				)}
+				<Contact />
 			</main>
 		</>
 	)

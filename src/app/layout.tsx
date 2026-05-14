@@ -24,7 +24,7 @@ export default function RootLayout({
 
 			<QueryProvider>
 				<LanguageProvider language="pt-BR">
-					<body className="bg-bg px-4 py-6 lg:p-24 mx-auto w-full space-y-20 overflow-x-hidden">{children}</body>
+					<body className="bg-background text-muted-foreground px-4 py-6 lg:p-24 mx-auto w-full space-y-20 overflow-x-hidden">{children}</body>
 				</LanguageProvider>
 			</QueryProvider>
 		</html>
