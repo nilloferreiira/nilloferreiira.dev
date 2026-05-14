@@ -17,12 +17,15 @@
     "dotenv": "^17.2.3",
     "drizzle-kit": "^0.31.8",
     "drizzle-orm": "^0.45.1",
+    "framer-motion": "^12.38.0",
     "lucide-react": "^0.546.0",
     "next": "^15.5.7",
     "postgres": "^3.4.7",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.68.0",
+    "tailwind-merge": "^3.6.0",
+    "tailwind-variants": "^3.2.2",
     "zod": "^4.1.13"
   },
   "devDependencies": {
