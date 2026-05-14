@@ -35,7 +35,7 @@ export function Experience({ language, title_en, title_pt, description_en, descr
             initial={{ opacity: 0, x: -10 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: index * 0.15 + 0.1 * i, duration: 0.4 }}
+            transition={{ delay: 0.1 * i, duration: 0.4 }}
             className="text-muted-foreground text-base leading-relaxed"
           >
             {line}
