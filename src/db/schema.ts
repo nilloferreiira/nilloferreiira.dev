@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, varchar, timestamp, serial, boolean } from "drizzle-orm/pg-core"
+import { pgTable, uuid, text, varchar, timestamp, serial, boolean, integer } from "drizzle-orm/pg-core"
 
 export const users = pgTable("users", {
 	id: uuid("id").defaultRandom().primaryKey(),
@@ -18,6 +18,8 @@ export const projects = pgTable("projects", {
 	imgSrc: varchar("img_src").notNull(),
 	url: varchar("url").notNull(),
 	position: serial("position").notNull(),
+	category: text("category").notNull().default("personal"),
+	tags: text("tags").array().notNull().default([]),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 	updatedAt: timestamp("updated_at").defaultNow().notNull(),
 	deletedAt: timestamp("deleted_at")
@@ -30,6 +32,13 @@ export const experiences = pgTable("experiences", {
 	description_en: text("description_en").notNull(),
 	description_pt: text("description_pt").notNull(),
 	position: serial("position").notNull(),
+	company: varchar("company").default("").notNull(),
+	start_year: integer("start_year"),
+	end_year: integer("end_year"),
+	location: varchar("location").default("").notNull(),
+	responsibilities_en: text("responsibilities_en").array().notNull().default([]),
+	responsibilities_pt: text("responsibilities_pt").array().notNull().default([]),
+	stack: text("stack").array().notNull().default([]),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 	updatedAt: timestamp("updated_at").defaultNow().notNull(),
 	deletedAt: timestamp("deleted_at")

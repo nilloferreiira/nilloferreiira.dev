@@ -2,10 +2,9 @@
 
 import { AdminExperienceCard } from "@/components/admin/admin-experience-card"
 import { AdminProjectCard } from "@/components/admin/admin-project-card"
-import { CreateProjectModal } from "@/components/admin/create-project-modal"
-import { CreateExperienceModal } from "@/components/admin/create-experience-modal"
-import { EditProjectModal } from "@/components/admin/edit-project-modal"
-import { EditExperienceModal } from "@/components/admin/edit-experience-modal"
+import { AdminSidePanel } from "@/components/admin/admin-side-panel"
+import { ProjectPanelContent } from "@/components/admin/project-panel-content"
+import { ExperiencePanelContent } from "@/components/admin/experience-panel-content"
 import { LoadingSpinner } from "@/components/loading/loading"
 import { useExperiences } from "@/hooks/experiences/useExperiences"
 import { useProjects } from "@/hooks/projects/useProjects"
@@ -15,26 +14,30 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "@/lib/react-query"
+import { LogOut, Plus } from "lucide-react"
+
+type PanelState =
+	| { mode: "idle" }
+	| { mode: "create-project" }
+	| { mode: "edit-project"; project: Project }
+	| { mode: "create-experience" }
+	| { mode: "edit-experience"; experience: Experience }
+
+const panelTitles: Record<PanelState["mode"], string> = {
+	idle: "",
+	"create-project": "New Project",
+	"edit-project": "Edit Project",
+	"create-experience": "New Experience",
+	"edit-experience": "Edit Experience"
+}
 
 export default function AdminPage() {
-	const [isCreateProjectOpen, setCreateProjectOpen] = useState(false)
-
-	// modals and editing state
-	const [isCreateExperienceOpen, setCreateExperienceOpen] = useState(false)
-	const [isEditProjectOpen, setEditProjectOpen] = useState(false)
-	const [isEditExperienceOpen, setEditExperienceOpen] = useState(false)
-
-	const [editingProject, setEditingProject] = useState<Project | null>(null)
-	const [editingExperience, setEditingExperience] = useState<Experience | null>(null)
+	const [panel, setPanel] = useState<PanelState>({ mode: "idle" })
+	const isPanelOpen = panel.mode !== "idle"
 
 	const { data: projects, isLoading: isLoadingProjects } = useProjects()
 	const { data: experiences, isLoading: isLoadingExperiences } = useExperiences()
 	const isLoaded = !isLoadingProjects && !isLoadingExperiences
-
-	function openEditProjectModal(project: Project) {
-		setEditingProject(project)
-		setEditProjectOpen(true)
-	}
 
 	const { mutateAsync: deleteProjectMutation } = useMutation({
 		mutationFn: async (id: number) => {
@@ -44,24 +47,13 @@ export default function AdminPage() {
 				body: JSON.stringify({ id })
 			})
 			if (!res.ok) throw new Error("Erro ao deletar projeto")
-			const json = await res.json()
-			return json
+			return res.json()
 		},
-		onSuccess: (_, variables) => {
-			queryClient.setQueryData(["projects"], (oldData: Project[] | undefined) => {
-				return oldData?.filter((p) => p.id !== variables) || []
-			})
+		onSuccess: (_, id) => {
+			queryClient.setQueryData(["projects"], (old: Project[] | undefined) => old?.filter((p) => p.id !== id) ?? [])
+			if (panel.mode === "edit-project" && panel.project.id === id) setPanel({ mode: "idle" })
 		}
 	})
-
-	async function handleDeleteProject(id: number) {
-		await deleteProjectMutation(id)
-	}
-
-	function openEditExperience(experience: Experience) {
-		setEditingExperience(experience)
-		setEditExperienceOpen(true)
-	}
 
 	const { mutateAsync: deleteExperienceMutation } = useMutation({
 		mutationFn: async (id: number) => {
@@ -71,17 +63,21 @@ export default function AdminPage() {
 				body: JSON.stringify({ id })
 			})
 			if (!res.ok) throw new Error("Erro ao deletar experiência")
-			const json = await res.json()
-			return json
+			return res.json()
 		},
-		onSuccess: (_, variables) => {
-			queryClient.setQueryData(["experiences"], (oldData: Experience[] | undefined) => {
-				return oldData?.filter((e) => e.id !== variables) || []
-			})
+		onSuccess: (_, id) => {
+			queryClient.setQueryData(["experiences"], (old: Experience[] | undefined) => old?.filter((e) => e.id !== id) ?? [])
+			if (panel.mode === "edit-experience" && panel.experience.id === id) setPanel({ mode: "idle" })
 		}
 	})
 
+	async function handleDeleteProject(id: number) {
+		if (!window.confirm("Delete this project?")) return
+		await deleteProjectMutation(id)
+	}
+
 	async function handleDeleteExperience(id: number) {
+		if (!window.confirm("Delete this experience?")) return
 		await deleteExperienceMutation(id)
 	}
 
@@ -97,79 +93,123 @@ export default function AdminPage() {
 	}
 
 	return (
-		<div className="p-6 lg:p-12 bg-shark text-white rounded-xl min-h-screen">
-			{!isLoaded ? (
-				<LoadingSpinner />
-			) : (
-				<div className="max-w-6xl mx-auto">
-					<header className="flex items-center justify-between mb-8">
-						<h1 className="text-2xl lg:text-3xl font-bold">Admin Panel</h1>
-						<div className="space-x-2">
-							<button
-								onClick={() => setCreateProjectOpen(true)}
-								className="bg-primary text-white px-4 py-2 rounded-2xl shadow hover:brightness-95 transition"
-							>
-								New Project
-							</button>
-							<button
-								onClick={() => setCreateExperienceOpen(true)}
-								className="bg-transparent border border-primary text-primary px-4 py-2 rounded-2xl hover:bg-primary/10 transition"
-							>
-								New Experience
-							</button>
+		<div className="flex h-screen bg-shark text-white overflow-hidden">
+			<div className="flex-1 min-w-0 overflow-y-auto">
+				{!isLoaded ? (
+					<LoadingSpinner />
+				) : (
+					<div className="p-6 lg:p-10 max-w-4xl">
+						<header className="flex items-center justify-between mb-10">
+							<div>
+								<h1 className="text-xl font-bold text-white">Admin</h1>
+								<p className="text-xs text-white/30 mt-0.5">nilloferreira.dev</p>
+							</div>
 							<button
 								onClick={handleSignOut}
-								className="bg-red-600 text-white px-4 py-2 rounded-2xl shadow hover:brightness-95 transition"
+								className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-white/40 hover:text-white hover:bg-white/5 transition"
 							>
+								<LogOut size={13} />
 								Sign out
 							</button>
-						</div>
-					</header>
+						</header>
 
-					<section className="mb-10">
-						<h2 className="text-xl font-semibold mb-4">Projects</h2>
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-							{projects &&
-								projects.map((p) => (
+						<section className="mb-10">
+							<div className="flex items-center justify-between mb-3">
+								<h2 className="text-xs font-semibold text-white/40 uppercase tracking-wider">
+									Projects
+									{projects && (
+										<span className="ml-2 text-white/20 font-normal normal-case tracking-normal">
+											{projects.length}
+										</span>
+									)}
+								</h2>
+								<button
+									onClick={() => setPanel({ mode: "create-project" })}
+									className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs text-primary border border-primary/30 hover:bg-primary/10 transition"
+								>
+									<Plus size={12} />
+									Add
+								</button>
+							</div>
+							<div className="space-y-0.5">
+								{projects?.map((p) => (
 									<AdminProjectCard
 										key={p.id}
 										project={p}
-										onEdit={openEditProjectModal}
-										onDelete={() => handleDeleteProject(p.id)}
+										isActive={panel.mode === "edit-project" && panel.project.id === p.id}
+										onEdit={(proj) => setPanel({ mode: "edit-project", project: proj })}
+										onDelete={handleDeleteProject}
 									/>
 								))}
-						</div>
-					</section>
+								{projects?.length === 0 && (
+									<p className="text-sm text-white/20 py-4 px-3">No projects yet.</p>
+								)}
+							</div>
+						</section>
 
-					<section>
-						<h2 className="text-xl font-semibold mb-4">Experiences</h2>
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-							{experiences &&
-								experiences.map((e) => (
+						<section>
+							<div className="flex items-center justify-between mb-3">
+								<h2 className="text-xs font-semibold text-white/40 uppercase tracking-wider">
+									Experiences
+									{experiences && (
+										<span className="ml-2 text-white/20 font-normal normal-case tracking-normal">
+											{experiences.length}
+										</span>
+									)}
+								</h2>
+								<button
+									onClick={() => setPanel({ mode: "create-experience" })}
+									className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs text-primary border border-primary/30 hover:bg-primary/10 transition"
+								>
+									<Plus size={12} />
+									Add
+								</button>
+							</div>
+							<div className="space-y-0.5">
+								{experiences?.map((e) => (
 									<AdminExperienceCard
 										key={e.id}
 										experience={e}
-										onEdit={openEditExperience}
+										isActive={panel.mode === "edit-experience" && panel.experience.id === e.id}
+										onEdit={(exp) => setPanel({ mode: "edit-experience", experience: exp })}
 										onDelete={handleDeleteExperience}
 									/>
 								))}
-						</div>
-					</section>
-				</div>
-			)}
+								{experiences?.length === 0 && (
+									<p className="text-sm text-white/20 py-4 px-3">No experiences yet.</p>
+								)}
+							</div>
+						</section>
+					</div>
+				)}
+			</div>
 
-			{/* Modals */}
-			<CreateProjectModal isOpen={isCreateProjectOpen} onClose={() => setCreateProjectOpen(false)} />
-
-			<CreateExperienceModal isOpen={isCreateExperienceOpen} onClose={() => setCreateExperienceOpen(false)} />
-
-			<EditProjectModal isOpen={isEditProjectOpen} onClose={() => setEditProjectOpen(false)} project={editingProject} />
-
-			<EditExperienceModal
-				isOpen={isEditExperienceOpen}
-				onClose={() => setEditExperienceOpen(false)}
-				experience={editingExperience}
-			/>
+			<AdminSidePanel
+				isOpen={isPanelOpen}
+				title={panelTitles[panel.mode]}
+				onClose={() => setPanel({ mode: "idle" })}
+			>
+				{panel.mode === "create-project" && (
+					<ProjectPanelContent key="create-project" project={null} onClose={() => setPanel({ mode: "idle" })} />
+				)}
+				{panel.mode === "edit-project" && (
+					<ProjectPanelContent
+						key={panel.project.id}
+						project={panel.project}
+						onClose={() => setPanel({ mode: "idle" })}
+					/>
+				)}
+				{panel.mode === "create-experience" && (
+					<ExperiencePanelContent key="create-experience" experience={null} onClose={() => setPanel({ mode: "idle" })} />
+				)}
+				{panel.mode === "edit-experience" && (
+					<ExperiencePanelContent
+						key={panel.experience.id}
+						experience={panel.experience}
+						onClose={() => setPanel({ mode: "idle" })}
+					/>
+				)}
+			</AdminSidePanel>
 		</div>
 	)
 }

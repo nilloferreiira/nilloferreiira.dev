@@ -1,5 +1,6 @@
 "use client"
 
+import { Contact } from "@/components/contact/contact"
 import { ExperienceContainer } from "@/components/experiences/experiences-container"
 import { Header } from "@/components/header/header"
 import { SwitchLanguage } from "@/components/language/switch"
@@ -13,12 +14,12 @@ export default function Home() {
 	const { data: experiences, isLoading: isLoadingExperiences } = useExperiences()
 	const isLoading = isLoadingProjects && isLoadingExperiences
 	return (
-		<>
-			<div className="absolute right-10 md:right-20 md:-mt-10">
+		<div className="min-h-screen relative">
+			<div className="fixed top-6 right-6 z-50">
 				<SwitchLanguage />
 			</div>
 			<Header />
-			<main className="lg:p-10 w-full flex flex-col items-center justify-center gap-20">
+			<main className="w-full flex flex-col">
 				{isLoading ? (
 					<LoadingSpinner />
 				) : (
@@ -27,7 +28,8 @@ export default function Home() {
 						<ProjectContainer projects={projects!} />
 					</>
 				)}
+				<Contact />
 			</main>
-		</>
+		</div>
 	)
 }
