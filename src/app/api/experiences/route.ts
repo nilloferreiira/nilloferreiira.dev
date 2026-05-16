@@ -3,8 +3,7 @@ export const runtime = "nodejs"
 import { NextRequest, NextResponse } from "next/server"
 import { experiences as experiencesSchema } from "@/db/schema"
 import { db } from "@/lib/db"
-import { asc, isNull } from "drizzle-orm"
-import { eq } from "drizzle-orm"
+import { asc, isNull, eq } from "drizzle-orm"
 
 export async function GET() {
 	try {
