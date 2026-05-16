@@ -9,9 +9,8 @@ interface AdminExperienceRowProps {
 }
 
 export function AdminExperienceCard({ experience, onEdit, onDelete, isActive }: AdminExperienceRowProps) {
-	const title = experience.title_pt || experience.title_en
-	const description = experience.description_pt || experience.description_en
-	const truncated = description.length > 70 ? description.slice(0, 70) + "…" : description
+	const primary = experience.company || experience.title_pt || experience.title_en
+	const secondary = experience.title_pt || experience.title_en
 
 	return (
 		<div
@@ -22,8 +21,8 @@ export function AdminExperienceCard({ experience, onEdit, onDelete, isActive }: 
 			}`}
 		>
 			<div className="flex-1 min-w-0">
-				<div className="font-medium text-white text-sm truncate">{title}</div>
-				{truncated && <div className="text-xs text-white/40 mt-0.5 truncate">{truncated}</div>}
+				<div className="font-medium text-white text-sm truncate">{primary}</div>
+				{primary !== secondary && <div className="text-xs text-white/40 mt-0.5 truncate">{secondary}</div>}
 			</div>
 
 			<div className="flex items-center gap-1 flex-shrink-0">
