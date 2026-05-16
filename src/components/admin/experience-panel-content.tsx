@@ -45,7 +45,14 @@ export function ExperiencePanelContent({ experience, onClose }: Props) {
 			title_pt: String(form.get("title_pt") ?? ""),
 			title_en: String(form.get("title_en") ?? ""),
 			description_pt: String(form.get("description_pt") ?? ""),
-			description_en: String(form.get("description_en") ?? "")
+			description_en: String(form.get("description_en") ?? ""),
+			company: "",
+			start_year: null,
+			end_year: null,
+			location: "",
+			responsibilities_en: [],
+			responsibilities_pt: [],
+			stack: []
 		}
 		mutateAsync(data)
 	}
