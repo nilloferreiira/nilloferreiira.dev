@@ -22,10 +22,10 @@ export function Links() {
 
 	return (
 		<motion.div
-			initial={{ opacity: 0, y: 20 }}
-			animate={{ opacity: 1, y: 0 }}
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
 			transition={{ delay: 0.6 }}
-			className="px-12 flex items-center justify-between"
+			className="flex items-center gap-3 justify-center md:justify-start"
 			data-slot="social-links"
 		>
 			<a

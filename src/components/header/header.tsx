@@ -6,34 +6,45 @@ import { HeaderContent } from "./content"
 
 export function Header() {
 	return (
-		<header className="relative w-full lg:w-4/5 lg:p-6 pt-10 flex flex-col lg:flex-row items-center justify-center lg:items-start lg:justify-start overflow-hidden">
+		<section className="min-h-screen flex items-center justify-center relative overflow-hidden px-6">
 			<div
-				className="absolute top-0 left-1/4 w-72 h-72 bg-neon-cyan/20 rounded-full blur-[100px] animate-float pointer-events-none"
+				className="absolute top-20 left-10 w-72 h-72 bg-neon-cyan/5 rounded-full blur-[100px] animate-float pointer-events-none"
 				style={{ animationDelay: "0s" }}
 			/>
 			<div
-				className="absolute top-0 right-1/4 w-72 h-72 bg-neon-purple/20 rounded-full blur-[100px] animate-float pointer-events-none"
-				style={{ animationDelay: "2s" }}
+				className="absolute bottom-20 right-10 w-96 h-96 bg-neon-purple/5 rounded-full blur-[100px] animate-float pointer-events-none"
+				style={{ animationDelay: "3s" }}
 			/>
 
-			<motion.div
-				initial={{ opacity: 0, scale: 0.8 }}
-				animate={{ opacity: 1, scale: 1 }}
-				transition={{ duration: 0.6, delay: 0.2 }}
-				className="relative"
-				data-slot="profile-image"
-			>
-				<div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,hsl(170_80%_50%/0.15),transparent_70%)] pointer-events-none" />
-				<Image
-					src="https://github.com/nilloferreiira.png"
-					alt="foto de perfil"
-					width={288}
-					height={288}
-					className="size-72 ring-2 rounded-full ring-neon-cyan/40 neon-glow"
-				/>
-			</motion.div>
+			<div className="container max-w-5xl mx-auto">
+				<motion.div
+					initial={{ opacity: 0, y: 40 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.8, ease: "easeOut" }}
+					className="flex flex-col md:flex-row items-center gap-10 md:gap-16"
+				>
+					<motion.div
+						initial={{ opacity: 0, scale: 0.8 }}
+						animate={{ opacity: 1, scale: 1 }}
+						transition={{ duration: 0.6, delay: 0.2 }}
+						className="relative"
+						data-slot="profile-image"
+					>
+						<div className="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden ring-2 ring-primary/30 neon-glow">
+							<Image
+								src="https://github.com/nilloferreiira.png"
+								alt="foto de perfil"
+								width={224}
+								height={224}
+								className="w-full h-full object-cover"
+							/>
+						</div>
+						<div className="absolute -inset-2 rounded-full bg-gradient-to-br from-neon-cyan/20 to-neon-purple/20 blur-xl -z-10" />
+					</motion.div>
 
-			<HeaderContent />
-		</header>
+					<HeaderContent />
+				</motion.div>
+			</div>
+		</section>
 	)
 }

@@ -1,54 +1,58 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Github, Linkedin, Mail } from "lucide-react"
+import { Github, Linkedin, Mail, Heart } from "lucide-react"
 import { useLanguage } from "@/hooks/useLanguage"
 
 export function Contact() {
   const { language } = useLanguage()
+
+  const socials = [
+    { icon: Github, href: "https://github.com/nilloferreiira", label: "GitHub" },
+    { icon: Linkedin, href: "https://www.linkedin.com/in/nilloferreiira/", label: "LinkedIn" },
+    { icon: Mail, href: "mailto:nilloferreiira@gmail.com", label: "Email" },
+  ]
+
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      className="w-full border-t border-border pt-16 pb-8 flex flex-col items-center gap-8"
-    >
-      <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold gradient-text">
-          {language === "pt-BR" ? "Vamos nos conectar" : "Let's connect"}
-        </h2>
-        <p className="text-muted-foreground">
-          {language === "pt-BR" ? "Me encontre na internet" : "Find me on the web"}
-        </p>
-      </div>
+    <footer className="py-16 px-6 border-t border-border/50">
+      <div className="container max-w-5xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center space-y-6"
+        >
+          <h2 className="text-2xl md:text-3xl font-bold gradient-text">
+            {language === "pt-BR" ? "Vamos conversar?" : "Let's talk?"}
+          </h2>
+          <p className="text-muted-foreground max-w-md mx-auto">
+            {language === "pt-BR"
+              ? "Estou sempre aberto a novas oportunidades e projetos interessantes."
+              : "I'm always open to new opportunities and interesting projects."}
+          </p>
 
-      <div className="flex items-center gap-4">
-        <a
-          href="https://github.com/nilloferreiira"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="glass glass-hover neon-glow rounded-full size-12 flex items-center justify-center transition-all"
-        >
-          <Github className="size-5 text-foreground" />
-        </a>
-        <a
-          href="https://www.linkedin.com/in/nilloferreiira/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="glass glass-hover neon-glow rounded-full size-12 flex items-center justify-center transition-all"
-        >
-          <Linkedin className="size-5 text-foreground" />
-        </a>
-        <a
-          href="mailto:nilloferreiira@gmail.com"
-          className="glass glass-hover neon-glow rounded-full size-12 flex items-center justify-center transition-all"
-        >
-          <Mail className="size-5 text-foreground" />
-        </a>
-      </div>
+          <div className="flex items-center justify-center gap-4">
+            {socials.map(({ icon: Icon, href, label }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="glass glass-hover w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:neon-glow"
+                aria-label={label}
+              >
+                <Icon size={20} />
+              </a>
+            ))}
+          </div>
 
-      <p className="text-muted-foreground text-sm">Built with ♥ by Danillo Ferreira</p>
-    </motion.section>
+          <p className="text-xs text-muted-foreground pt-8 flex items-center justify-center gap-1">
+            {language === "pt-BR" ? "Feito com" : "Made with"}
+            <Heart size={12} className="text-neon-pink" />
+            {language === "pt-BR" ? "por Danillo" : "by Danillo"}
+          </p>
+        </motion.div>
+      </div>
+    </footer>
   )
 }

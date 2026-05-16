@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { useLanguage } from "@/hooks/useLanguage"
 import { Project } from "./project"
 import { Project as ProjectType } from "@/types/project/project"
@@ -39,66 +39,83 @@ export function ProjectContainer({ projects }: ProjectsContainerProps) {
   }
 
   return (
-    <div className="glass w-full flex flex-col items-start justify-center p-4 lg:p-16 rounded-xl space-y-6 lg:space-y-10">
-      <h1 className="text-foreground font-semibold text-3xl">
-        {language === "pt-BR" ? "Meus projetos " : "My projects "}&#x1F447;
-      </h1>
+    <section className="py-24 px-6" id="projects">
+      <div className="container max-w-5xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-3xl md:text-4xl font-bold mb-8">
+            <span className="gradient-text">
+              {language === "pt-BR" ? "Meus Projetos" : "My Projects"}
+            </span>
+          </h2>
+        </motion.div>
 
-      {/* Category filter buttons */}
-      <div className="flex flex-wrap gap-2">
-        {CATEGORIES.map((cat) => {
-          const isActive = activeCategory === cat.value
-          return (
-            <button
-              key={cat.value}
-              onClick={() => setActiveCategory(cat.value)}
-              className={`px-4 py-2 rounded-full text-sm transition-all ${
-                isActive
-                  ? "glass bg-primary/20 border border-primary/50 text-primary"
-                  : "glass text-muted-foreground border border-transparent"
-              }`}
-            >
-              {language === "pt-BR" ? cat.label_pt : cat.label_en}
-            </button>
-          )
-        })}
-      </div>
-
-      {/* Tag filter pills */}
-      {allTags.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {allTags.map((tag) => {
-            const isActive = activeTags.includes(tag)
+        {/* Category filter buttons */}
+        <div className="flex flex-wrap gap-2 mb-4">
+          {CATEGORIES.map((cat) => {
+            const isActive = activeCategory === cat.value
             return (
               <button
-                key={tag}
-                onClick={() => toggleTag(tag)}
-                className={`px-3 py-1 rounded-full text-xs transition-all ${
+                key={cat.value}
+                onClick={() => setActiveCategory(cat.value)}
+                className={`px-4 py-2 text-sm rounded-lg font-medium transition-all duration-200 ${
                   isActive
-                    ? "bg-primary/20 text-primary border border-primary/50"
-                    : "glass text-muted-foreground border border-transparent"
+                    ? "bg-primary text-primary-foreground"
+                    : "glass text-muted-foreground hover:text-foreground"
                 }`}
               >
-                {tag}
+                {language === "pt-BR" ? cat.label_pt : cat.label_en}
               </button>
             )
           })}
         </div>
-      )}
 
-      {/* Projects grid */}
-      <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Tag filter pills */}
+        {allTags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-8">
+            {allTags.map((tag) => {
+              const isActive = activeTags.includes(tag)
+              return (
+                <button
+                  key={tag}
+                  onClick={() => toggleTag(tag)}
+                  className={`px-2.5 py-1 text-xs rounded-full font-mono transition-all duration-200 border ${
+                    isActive
+                      ? "bg-accent/20 text-accent border-accent/40"
+                      : "bg-transparent text-muted-foreground border-border hover:border-primary/30 hover:text-primary"
+                  }`}
+                >
+                  {tag}
+                </button>
+              )
+            })}
+          </div>
+        )}
+
+        {/* Projects grid */}
         <AnimatePresence mode="popLayout">
-          {filteredProjects.map((project, i) => (
-            <Project
-              key={project.id}
-              language={language}
-              project={project}
-              index={i}
-            />
-          ))}
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {filteredProjects.map((project, i) => (
+              <Project
+                key={project.id}
+                language={language}
+                project={project}
+                index={i}
+              />
+            ))}
+          </motion.div>
         </AnimatePresence>
+
+        {filteredProjects.length === 0 && (
+          <p className="text-center text-muted-foreground py-12 font-mono text-sm">
+            {language === "pt-BR" ? "Nenhum projeto encontrado." : "No projects found."}
+          </p>
+        )}
       </div>
-    </div>
+    </section>
   )
 }

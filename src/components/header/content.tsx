@@ -9,57 +9,54 @@ export function HeaderContent() {
 	const { language } = useLanguage()
 
 	return (
-		<div className="flex flex-col gap-5 items-center md:items-start justify-center">
-			<div className="p-8">
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.3 }}
-				>
-					<h1 className="text-4xl lg:text-5xl text-foreground font-semibold sm-mx-auto text-center lg:text-left">
-						{language === "en" ? "Hi I'm Danillo" : "Olá! Eu sou o Danillo"}
-						<span>&#128075;</span>
-					</h1>
-				</motion.div>
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.4 }}
-					className="p-2"
-				>
-					<h2
-						className={`${language === "en" ? "text-2xl" : "text-xl"} lg:text-4xl text-muted-foreground tracking-widest whitespace-nowrap overflow-hidden typing-animation`}
-					>
-						{language === "en" ? "Software Developer" : "Desenvolvedor de Software"}
-					</h2>
-				</motion.div>
-			</div>
+		<div className="flex flex-col gap-5 text-center md:text-left">
+			<motion.div
+				initial={{ opacity: 0, y: 20 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ delay: 0.3 }}
+			>
+				<h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+					{language === "en" ? "Hey! I'm " : "Olá! Eu sou o "}
+					<span className="gradient-text">Danillo</span>
+					<span> &#128075;</span>
+				</h1>
+				<p className="text-xl md:text-2xl text-muted-foreground mt-2 font-light">
+					{language === "en" ? "Software Developer" : "Desenvolvedor de Software"}
+				</p>
+			</motion.div>
 
-			<div className="px-8">
-				<div className="flex flex-col gap-2">
-					<span className="text-muted-foreground">
-						<strong className="text-foreground">{language === "en" ? "Degree: " : "Formação: "}</strong>
-						{language === "en" ? "Systems Analysis and Development" : "Análise e Desenvolvimento de Sistemas"}
-					</span>
-					<span className="text-muted-foreground flex items-center gap-2">
-						<strong className="text-foreground">{language === "en" ? "English" : "Inglês"}</strong>
-						<span className="text-muted-foreground">—</span>
-						<span className="text-muted-foreground">
-							{language === "en" ? "B2 (Upper-intermediate)" : "nível B2 (intermediário avançado)"}
-						</span>
-					</span>
-				</div>
-			</div>
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				transition={{ delay: 0.5 }}
+				className="space-y-1 text-sm text-muted-foreground"
+			>
+				<p>
+					<span className="text-primary font-medium">{language === "en" ? "Education: " : "Formação: "}</span>
+					{language === "en" ? "Systems Analysis and Development" : "Análise e Desenvolvimento de Sistemas"}
+				</p>
+				<p>
+					<span className="text-primary font-medium">{language === "en" ? "English" : "Inglês"}</span>
+					{" — "}
+					{language === "en" ? "B2 level (upper intermediate)" : "nível B2 (intermediário avançado)"}
+				</p>
+			</motion.div>
 
-			<div className="w-96 space-y-5">
-				<Links />
+			<Links />
+
+			<motion.div
+				initial={{ opacity: 0, y: 10 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ delay: 0.7 }}
+				className="flex justify-center md:justify-start"
+			>
 				<a
 					href="mailto:nilloferreiira@gmail.com"
-					className="bg-surface rounded-full py-4 w-4/5 mx-auto font-bold text-foreground flex items-center justify-center gap-2 hover:bg-surface/80 transition-colors"
+					className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-gradient-to-r from-primary/20 to-accent/20 border border-primary/30 hover:border-primary/60 transition-all duration-300 hover:neon-glow font-medium"
 				>
-					{language === "en" ? "Contact me" : "Me contate"} <Mail />
+					{language === "en" ? "Contact me" : "Me contate"} <Mail size={18} />
 				</a>
-			</div>
+			</motion.div>
 		</div>
 	)
 }
