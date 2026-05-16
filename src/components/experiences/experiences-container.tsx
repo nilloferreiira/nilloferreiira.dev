@@ -56,6 +56,13 @@ export function ExperienceContainer({ experiences }: ExperiencesContainerProps) 
                 title_pt={current.title_pt}
                 description_en={current.description_en}
                 description_pt={current.description_pt}
+                company={current.company}
+                start_year={current.start_year}
+                end_year={current.end_year}
+                location={current.location}
+                responsibilities_en={current.responsibilities_en}
+                responsibilities_pt={current.responsibilities_pt}
+                stack={current.stack}
                 bare={true}
               />
             </div>
@@ -83,6 +90,13 @@ export function ExperienceContainer({ experiences }: ExperiencesContainerProps) 
                     title_pt={experience.title_pt}
                     description_en={experience.description_en}
                     description_pt={experience.description_pt}
+                    company={experience.company}
+                    start_year={experience.start_year}
+                    end_year={experience.end_year}
+                    location={experience.location}
+                    responsibilities_en={experience.responsibilities_en}
+                    responsibilities_pt={experience.responsibilities_pt}
+                    stack={experience.stack}
                   />
                 </div>
               ))}
