@@ -42,8 +42,6 @@ export function Experience({
 
   const descriptionLines = description.split("\n").filter(Boolean)
 
-  const endLabel = end_year ?? (language === "pt-BR" ? "Atual" : "Present")
-
   return (
     <motion.div
       initial={{ opacity: 0, x: -30 }}
@@ -59,15 +57,17 @@ export function Experience({
       </div>
 
       {/* Date + Location */}
-      {start_year !== null && (
+      {(start_year !== null || !!location) && (
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
-          <span className="flex items-center gap-1.5">
-            <CalendarDays className="w-4 h-4 shrink-0" />
-            {start_year} – {endLabel}
-          </span>
+          {start_year !== null && (
+            <span className="flex items-center gap-1">
+              <CalendarDays size={14} />
+              {start_year} – {end_year ?? (language === "pt-BR" ? "Atual" : "Present")}
+            </span>
+          )}
           {location && (
-            <span className="flex items-center gap-1.5">
-              <MapPin className="w-4 h-4 shrink-0" />
+            <span className="flex items-center gap-1">
+              <MapPin size={14} />
               {location}
             </span>
           )}
@@ -95,7 +95,7 @@ export function Experience({
       {/* Responsibilities */}
       {responsibilities.length > 0 && (
         <div className="space-y-2">
-          <p className="text-sm font-semibold text-white/60 uppercase tracking-wider mb-2">
+          <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
             {language === "pt-BR" ? "Responsabilidades" : "Responsibilities"}
           </p>
           <ul className="space-y-1.5">
