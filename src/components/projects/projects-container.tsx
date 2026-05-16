@@ -10,13 +10,14 @@ interface ProjectsContainerProps {
   projects: ProjectType[]
 }
 
-type Category = "all" | "personal" | "freelance" | "work"
+type Category = "all" | "personal" | "freelance" | "work" | "evento"
 
 const CATEGORIES: { value: Category; label_en: string; label_pt: string }[] = [
   { value: "all", label_en: "All", label_pt: "Todos" },
   { value: "personal", label_en: "Personal", label_pt: "Pessoal" },
   { value: "freelance", label_en: "Freelance", label_pt: "Freelance" },
   { value: "work", label_en: "Work", label_pt: "Trabalho" },
+  { value: "evento", label_en: "Event", label_pt: "Evento" },
 ]
 
 export function ProjectContainer({ projects }: ProjectsContainerProps) {
