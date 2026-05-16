@@ -30,7 +30,14 @@ export async function POST(request: NextRequest) {
 				title_pt: body.title_pt,
 				title_en: body.title_en,
 				description_en: body.description_en,
-				description_pt: body.description_pt
+				description_pt: body.description_pt,
+				company: body.company ?? "",
+				start_year: body.start_year ?? null,
+				end_year: body.end_year ?? null,
+				location: body.location ?? "",
+				responsibilities_en: body.responsibilities_en ?? [],
+				responsibilities_pt: body.responsibilities_pt ?? [],
+				stack: body.stack ?? []
 			})
 			.returning()
 
@@ -52,7 +59,14 @@ export async function PUT(request: NextRequest) {
 				title_pt: body.title_pt,
 				title_en: body.title_en,
 				description_en: body.description_en,
-				description_pt: body.description_pt
+				description_pt: body.description_pt,
+				company: body.company ?? "",
+				start_year: body.start_year ?? null,
+				end_year: body.end_year ?? null,
+				location: body.location ?? "",
+				responsibilities_en: body.responsibilities_en ?? [],
+				responsibilities_pt: body.responsibilities_pt ?? [],
+				stack: body.stack ?? []
 			})
 			.where(eq(experiencesSchema.id, body.id))
 			.returning()
