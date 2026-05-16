@@ -46,13 +46,22 @@ export function ExperiencePanelContent({ experience, onClose }: Props) {
 			title_en: String(form.get("title_en") ?? ""),
 			description_pt: String(form.get("description_pt") ?? ""),
 			description_en: String(form.get("description_en") ?? ""),
-			company: "",
-			start_year: null,
-			end_year: null,
-			location: "",
-			responsibilities_en: [],
-			responsibilities_pt: [],
-			stack: []
+			company: String(form.get("company") ?? ""),
+			start_year: Number(form.get("start_year")) || null,
+			end_year: Number(form.get("end_year")) || null,
+			location: String(form.get("location") ?? ""),
+			responsibilities_pt: String(form.get("responsibilities_pt") ?? "")
+				.split("\n")
+				.map((s) => s.trim())
+				.filter(Boolean),
+			responsibilities_en: String(form.get("responsibilities_en") ?? "")
+				.split("\n")
+				.map((s) => s.trim())
+				.filter(Boolean),
+			stack: String(form.get("stack") ?? "")
+				.split(",")
+				.map((s) => s.trim())
+				.filter(Boolean)
 		}
 		mutateAsync(data)
 	}
@@ -61,12 +70,12 @@ export function ExperiencePanelContent({ experience, onClose }: Props) {
 		<form onSubmit={handleSubmit} className="flex flex-col min-h-full">
 			<div className="flex-1 px-7 py-6 space-y-6">
 				<div>
-					<label className={labelClass}>Title (PT)</label>
+					<label className={labelClass}>Role (PT)</label>
 					<input name="title_pt" required defaultValue={experience?.title_pt ?? ""} className={inputClass} />
 				</div>
 
 				<div>
-					<label className={labelClass}>Title (EN)</label>
+					<label className={labelClass}>Role (EN)</label>
 					<input name="title_en" defaultValue={experience?.title_en ?? ""} className={inputClass} />
 				</div>
 
@@ -87,6 +96,69 @@ export function ExperiencePanelContent({ experience, onClose }: Props) {
 						rows={5}
 						defaultValue={experience?.description_en ?? ""}
 						className={`${inputClass} resize-none`}
+					/>
+				</div>
+
+				<div>
+					<label className={labelClass}>Company</label>
+					<input name="company" defaultValue={experience?.company ?? ""} className={inputClass} />
+				</div>
+
+				<div className="grid grid-cols-2 gap-4">
+					<div>
+						<label className={labelClass}>Start Year</label>
+						<input
+							name="start_year"
+							type="number"
+							defaultValue={experience?.start_year ?? ""}
+							className={inputClass}
+						/>
+					</div>
+					<div>
+						<label className={labelClass}>End Year</label>
+						<input
+							name="end_year"
+							type="number"
+							defaultValue={experience?.end_year ?? ""}
+							className={inputClass}
+						/>
+					</div>
+				</div>
+
+				<div>
+					<label className={labelClass}>Location</label>
+					<input name="location" defaultValue={experience?.location ?? ""} className={inputClass} />
+				</div>
+
+				<div>
+					<label className={labelClass}>Responsibilities (PT)</label>
+					<textarea
+						name="responsibilities_pt"
+						rows={4}
+						defaultValue={(experience?.responsibilities_pt ?? []).join("\n")}
+						className={`${inputClass} resize-none`}
+						placeholder="One per line"
+					/>
+				</div>
+
+				<div>
+					<label className={labelClass}>Responsibilities (EN)</label>
+					<textarea
+						name="responsibilities_en"
+						rows={4}
+						defaultValue={(experience?.responsibilities_en ?? []).join("\n")}
+						className={`${inputClass} resize-none`}
+						placeholder="One per line"
+					/>
+				</div>
+
+				<div>
+					<label className={labelClass}>Stack</label>
+					<input
+						name="stack"
+						defaultValue={(experience?.stack ?? []).join(", ")}
+						className={inputClass}
+						placeholder="Comma-separated"
 					/>
 				</div>
 			</div>
