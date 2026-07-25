@@ -1,7 +1,7 @@
 "use client"
 
 import { AdminExperienceCard } from "@/components/admin/admin-experience-card"
-import { AdminProjectCard } from "@/components/admin/admin-project-card"
+import { SortableProjectItem } from "@/components/admin/sortable-project-item"
 import { AdminSidePanel } from "@/components/admin/admin-side-panel"
 import { ProjectPanelContent } from "@/components/admin/project-panel-content"
 import { ExperiencePanelContent } from "@/components/admin/experience-panel-content"
@@ -10,10 +10,11 @@ import { useExperiences } from "@/hooks/experiences/useExperiences"
 import { useProjects } from "@/hooks/projects/useProjects"
 import { Project } from "@/types/project/project"
 import type { Experience } from "@/types/experience/experience"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "@/lib/react-query"
+import { Reorder } from "framer-motion"
 import { LogOut, Plus } from "lucide-react"
 
 type PanelState =
@@ -76,6 +77,32 @@ export default function AdminPage() {
 		await deleteProjectMutation(id)
 	}
 
+	const dragSnapshotRef = useRef<Project[] | null>(null)
+
+	const { mutate: reorderProjects } = useMutation({
+		mutationFn: async (newOrder: Project[]) => {
+			const res = await fetch("/api/projects/reorder", {
+				method: "PATCH",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ orderedIds: newOrder.map((p) => p.id) })
+			})
+			if (!res.ok) throw new Error("Erro ao reordenar projetos")
+			return res.json()
+		},
+		onError: () => {
+			if (dragSnapshotRef.current) queryClient.setQueryData(["projects"], dragSnapshotRef.current)
+		}
+	})
+
+	function handleProjectDragStart() {
+		dragSnapshotRef.current = queryClient.getQueryData<Project[]>(["projects"]) ?? null
+	}
+
+	function handleProjectDragEnd() {
+		const current = queryClient.getQueryData<Project[]>(["projects"])
+		if (current) reorderProjects(current)
+	}
+
 	async function handleDeleteExperience(id: number) {
 		if (!window.confirm("Delete this experience?")) return
 		await deleteExperienceMutation(id)
@@ -131,20 +158,28 @@ export default function AdminPage() {
 									Add
 								</button>
 							</div>
-							<div className="space-y-0.5">
+							<Reorder.Group
+								as="div"
+								axis="y"
+								values={projects ?? []}
+								onReorder={(newOrder) => queryClient.setQueryData(["projects"], newOrder)}
+								className="space-y-0.5"
+							>
 								{projects?.map((p) => (
-									<AdminProjectCard
+									<SortableProjectItem
 										key={p.id}
 										project={p}
 										isActive={panel.mode === "edit-project" && panel.project.id === p.id}
 										onEdit={(proj) => setPanel({ mode: "edit-project", project: proj })}
 										onDelete={handleDeleteProject}
+										onDragStart={handleProjectDragStart}
+										onDragEnd={handleProjectDragEnd}
 									/>
 								))}
 								{projects?.length === 0 && (
 									<p className="text-sm text-white/20 py-4 px-3">No projects yet.</p>
 								)}
-							</div>
+							</Reorder.Group>
 						</section>
 
 						<section>

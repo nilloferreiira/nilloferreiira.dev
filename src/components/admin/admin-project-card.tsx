@@ -1,4 +1,5 @@
-import { ExternalLink, Pencil, Trash2 } from "lucide-react"
+import { ExternalLink, GripVertical, Pencil, Trash2 } from "lucide-react"
+import type { DragControls } from "framer-motion"
 import { Project } from "@/types/project/project"
 
 interface AdminProjectRowProps {
@@ -6,6 +7,7 @@ interface AdminProjectRowProps {
 	onEdit: (project: Project) => void
 	onDelete: (id: number) => void
 	isActive?: boolean
+	dragControls?: DragControls
 }
 
 const categoryStyle: Record<Project["category"], string> = {
@@ -15,13 +17,22 @@ const categoryStyle: Record<Project["category"], string> = {
 	evento: "bg-rose-400/15 text-rose-400"
 }
 
-export function AdminProjectCard({ project, onEdit, onDelete, isActive }: AdminProjectRowProps) {
+export function AdminProjectCard({ project, onEdit, onDelete, isActive, dragControls }: AdminProjectRowProps) {
 	return (
 		<div
 			className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all ${
 				isActive ? "bg-white/8 ring-1 ring-primary/30" : "hover:bg-white/5 ring-1 ring-transparent hover:ring-white/10"
 			}`}
 		>
+			{dragControls && (
+				<div
+					onPointerDown={(e) => dragControls.start(e)}
+					className="cursor-grab active:cursor-grabbing text-white/20 hover:text-white/50 flex-shrink-0 touch-none"
+				>
+					<GripVertical size={14} />
+				</div>
+			)}
+
 			{project.imgSrc ? (
 				// eslint-disable-next-line @next/next/no-img-element
 				<img
