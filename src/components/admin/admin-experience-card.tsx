@@ -1,4 +1,5 @@
-import { Pencil, Trash2 } from "lucide-react"
+import { GripVertical, Pencil, Trash2 } from "lucide-react"
+import type { DragControls } from "framer-motion"
 import { Experience } from "@/types/experience/experience"
 
 interface AdminExperienceRowProps {
@@ -6,9 +7,10 @@ interface AdminExperienceRowProps {
 	onEdit: (experience: Experience) => void
 	onDelete: (id: number) => void
 	isActive?: boolean
+	dragControls?: DragControls
 }
 
-export function AdminExperienceCard({ experience, onEdit, onDelete, isActive }: AdminExperienceRowProps) {
+export function AdminExperienceCard({ experience, onEdit, onDelete, isActive, dragControls }: AdminExperienceRowProps) {
 	const primary = experience.company || experience.title_pt || experience.title_en
 	const secondary = experience.title_pt || experience.title_en
 
@@ -20,6 +22,15 @@ export function AdminExperienceCard({ experience, onEdit, onDelete, isActive }: 
 					: "hover:bg-white/5 ring-1 ring-transparent hover:ring-white/10"
 			}`}
 		>
+			{dragControls && (
+				<div
+					onPointerDown={(e) => dragControls.start(e)}
+					className="cursor-grab active:cursor-grabbing text-white/20 hover:text-white/50 flex-shrink-0 touch-none"
+				>
+					<GripVertical size={14} />
+				</div>
+			)}
+
 			<div className="flex-1 min-w-0">
 				<div className="font-medium text-white text-sm truncate">{primary}</div>
 				{primary !== secondary && <div className="text-xs text-white/40 mt-0.5 truncate">{secondary}</div>}

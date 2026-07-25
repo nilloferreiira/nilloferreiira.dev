@@ -1,6 +1,6 @@
 "use client"
 
-import { AdminExperienceCard } from "@/components/admin/admin-experience-card"
+import { SortableExperienceItem } from "@/components/admin/sortable-experience-item"
 import { SortableProjectItem } from "@/components/admin/sortable-project-item"
 import { AdminSidePanel } from "@/components/admin/admin-side-panel"
 import { ProjectPanelContent } from "@/components/admin/project-panel-content"
@@ -108,6 +108,32 @@ export default function AdminPage() {
 		await deleteExperienceMutation(id)
 	}
 
+	const dragExperienceSnapshotRef = useRef<Experience[] | null>(null)
+
+	const { mutate: reorderExperiences } = useMutation({
+		mutationFn: async (newOrder: Experience[]) => {
+			const res = await fetch("/api/experiences/reorder", {
+				method: "PATCH",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ orderedIds: newOrder.map((e) => e.id) })
+			})
+			if (!res.ok) throw new Error("Erro ao reordenar experiências")
+			return res.json()
+		},
+		onError: () => {
+			if (dragExperienceSnapshotRef.current) queryClient.setQueryData(["experiences"], dragExperienceSnapshotRef.current)
+		}
+	})
+
+	function handleExperienceDragStart() {
+		dragExperienceSnapshotRef.current = queryClient.getQueryData<Experience[]>(["experiences"]) ?? null
+	}
+
+	function handleExperienceDragEnd() {
+		const current = queryClient.getQueryData<Experience[]>(["experiences"])
+		if (current) reorderExperiences(current)
+	}
+
 	const router = useRouter()
 
 	async function handleSignOut() {
@@ -200,20 +226,28 @@ export default function AdminPage() {
 									Add
 								</button>
 							</div>
-							<div className="space-y-0.5">
+							<Reorder.Group
+								as="div"
+								axis="y"
+								values={experiences ?? []}
+								onReorder={(newOrder) => queryClient.setQueryData(["experiences"], newOrder)}
+								className="space-y-0.5"
+							>
 								{experiences?.map((e) => (
-									<AdminExperienceCard
+									<SortableExperienceItem
 										key={e.id}
 										experience={e}
 										isActive={panel.mode === "edit-experience" && panel.experience.id === e.id}
 										onEdit={(exp) => setPanel({ mode: "edit-experience", experience: exp })}
 										onDelete={handleDeleteExperience}
+										onDragStart={handleExperienceDragStart}
+										onDragEnd={handleExperienceDragEnd}
 									/>
 								))}
 								{experiences?.length === 0 && (
 									<p className="text-sm text-white/20 py-4 px-3">No experiences yet.</p>
 								)}
-							</div>
+							</Reorder.Group>
 						</section>
 					</div>
 				)}
