@@ -60,9 +60,9 @@ export function Project({ project, language, index }: ProjectProps) {
 
         {project.tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
-            {project.tags.map((tag) => (
+            {project.tags.map((tag, index) => (
               <span
-                key={tag}
+                key={`${tag}-${index}`}
                 className="px-2.5 py-1 text-xs rounded-full bg-primary/10 text-primary border border-primary/20 font-mono"
               >
                 {tag}
