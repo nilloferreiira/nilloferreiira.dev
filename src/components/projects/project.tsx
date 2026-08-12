@@ -23,13 +23,27 @@ export function Project({ project, language, index }: ProjectProps) {
     >
       {/* Preview area */}
       {project.imgSrc ? (
-        <Image
-          src={project.imgSrc}
-          alt={project.title}
-          width={500}
-          height={300}
-          className="w-full object-cover"
-        />
+        <div className="relative">
+          <Image
+            src={project.imgSrc}
+            alt={project.title}
+            width={500}
+            height={300}
+            className="w-full object-cover"
+          />
+          {project.url && (
+            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-7 h-7 rounded-full bg-background/80 backdrop-blur flex items-center justify-center text-muted-foreground hover:text-primary transition-colors"
+              >
+                <ExternalLink size={13} />
+              </a>
+            </div>
+          )}
+        </div>
       ) : (
         <div className="h-36 bg-gradient-to-br from-surface to-surface-raised flex items-center justify-center relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5" />
