@@ -1,8 +1,11 @@
 "use client"
 
+import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "@/lib/react-query"
 import { Project } from "@/types/project/project"
+import { TagInput } from "@/components/admin/tag-input"
+import { imagePlaceholderStyle } from "@/components/admin/image-placeholder"
 
 interface Props {
 	project: Project | null
@@ -15,6 +18,7 @@ const labelClass = "block text-sm font-medium text-white/40 mb-2 uppercase track
 
 export function ProjectPanelContent({ project, onClose }: Props) {
 	const isEdit = project !== null
+	const [imgSrc, setImgSrc] = useState(project?.imgSrc ?? "")
 
 	const { mutateAsync, isPending } = useMutation({
 		mutationFn: async (data: Project) => {
@@ -68,7 +72,7 @@ export function ProjectPanelContent({ project, onClose }: Props) {
 					<label className={labelClass}>Description (PT)</label>
 					<textarea
 						name="description_pt"
-						rows={4}
+						rows={8}
 						defaultValue={project?.description_pt ?? ""}
 						className={`${inputClass} resize-none`}
 					/>
@@ -78,7 +82,7 @@ export function ProjectPanelContent({ project, onClose }: Props) {
 					<label className={labelClass}>Description (EN)</label>
 					<textarea
 						name="description_en"
-						rows={4}
+						rows={8}
 						defaultValue={project?.description_en ?? ""}
 						className={`${inputClass} resize-none`}
 					/>
@@ -87,15 +91,32 @@ export function ProjectPanelContent({ project, onClose }: Props) {
 				<div className="grid grid-cols-2 gap-4">
 					<div>
 						<label className={labelClass}>Image URL</label>
-						<input name="imgSrc" defaultValue={project?.imgSrc ?? ""} className={inputClass} />
+						<input
+							name="imgSrc"
+							defaultValue={project?.imgSrc ?? ""}
+							placeholder="https://..."
+							className={`${inputClass} mb-3`}
+							onChange={(e) => setImgSrc(e.target.value)}
+						/>
+						{imgSrc ? (
+							// eslint-disable-next-line @next/next/no-img-element
+							<img src={imgSrc} alt="" className="w-full h-[120px] object-cover rounded-lg" />
+						) : (
+							<div
+								style={imagePlaceholderStyle}
+								className="w-full h-[120px] rounded-lg flex items-center justify-center text-white/30 text-xs font-mono"
+							>
+								preview
+							</div>
+						)}
 					</div>
 					<div>
 						<label className={labelClass}>Project URL</label>
-						<input name="url" defaultValue={project?.url ?? ""} className={inputClass} />
+						<input name="url" defaultValue={project?.url ?? ""} placeholder="https://..." className={inputClass} />
 					</div>
 				</div>
 
-				<div className="grid grid-cols-2 gap-4">
+				<div className="grid grid-cols-[1fr_2fr] gap-4">
 					<div>
 						<label className={labelClass}>Category</label>
 						<select name="category" defaultValue={project?.category ?? "personal"} className={inputClass}>
@@ -107,28 +128,23 @@ export function ProjectPanelContent({ project, onClose }: Props) {
 					</div>
 					<div>
 						<label className={labelClass}>Tags</label>
-						<input
-							name="tags"
-							defaultValue={project?.tags.join(", ") ?? ""}
-							placeholder="react, typescript..."
-							className={inputClass}
-						/>
+						<TagInput name="tags" defaultValue={project?.tags ?? []} placeholder="add tag, press enter" />
 					</div>
 				</div>
 			</div>
 
-			<div className="flex gap-3 px-7 py-5 border-t border-white/10 flex-shrink-0">
+			<div className="flex justify-end gap-2 px-7 py-4 border-t border-white/10 flex-shrink-0">
 				<button
 					type="button"
 					onClick={onClose}
-					className="flex-1 px-4 py-3 rounded-xl border border-white/10 text-white/50 hover:text-white hover:bg-white/5 text-base transition"
+					className="px-4 py-2 rounded-lg border border-white/10 text-white/50 hover:text-white hover:bg-white/5 text-sm transition"
 				>
 					Cancel
 				</button>
 				<button
 					type="submit"
 					disabled={isPending}
-					className="flex-1 px-4 py-3 rounded-xl bg-primary text-white text-base font-medium hover:brightness-95 disabled:opacity-50 disabled:cursor-not-allowed transition"
+					className="px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:brightness-95 disabled:opacity-50 disabled:cursor-not-allowed transition"
 				>
 					{isPending ? "Saving..." : isEdit ? "Save" : "Create"}
 				</button>

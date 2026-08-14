@@ -3,6 +3,7 @@
 import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "@/lib/react-query"
 import type { Experience } from "@/types/experience/experience"
+import { TagInput } from "@/components/admin/tag-input"
 
 interface Props {
 	experience: Experience | null
@@ -83,7 +84,7 @@ export function ExperiencePanelContent({ experience, onClose }: Props) {
 					<label className={labelClass}>Description (PT)</label>
 					<textarea
 						name="description_pt"
-						rows={5}
+						rows={7}
 						defaultValue={experience?.description_pt ?? ""}
 						className={`${inputClass} resize-none`}
 					/>
@@ -93,18 +94,17 @@ export function ExperiencePanelContent({ experience, onClose }: Props) {
 					<label className={labelClass}>Description (EN)</label>
 					<textarea
 						name="description_en"
-						rows={5}
+						rows={7}
 						defaultValue={experience?.description_en ?? ""}
 						className={`${inputClass} resize-none`}
 					/>
 				</div>
 
-				<div>
-					<label className={labelClass}>Company</label>
-					<input name="company" defaultValue={experience?.company ?? ""} className={inputClass} />
-				</div>
-
-				<div className="grid grid-cols-2 gap-4">
+				<div className="grid grid-cols-4 gap-4">
+					<div>
+						<label className={labelClass}>Company</label>
+						<input name="company" defaultValue={experience?.company ?? ""} className={inputClass} />
+					</div>
 					<div>
 						<label className={labelClass}>Start Year</label>
 						<input
@@ -120,61 +120,57 @@ export function ExperiencePanelContent({ experience, onClose }: Props) {
 							name="end_year"
 							type="number"
 							defaultValue={experience?.end_year ?? ""}
+							placeholder="present"
 							className={inputClass}
+						/>
+					</div>
+					<div>
+						<label className={labelClass}>Location</label>
+						<input name="location" defaultValue={experience?.location ?? ""} className={inputClass} />
+					</div>
+				</div>
+
+				<div className="grid grid-cols-2 gap-4">
+					<div>
+						<label className={labelClass}>Responsibilities (PT)</label>
+						<textarea
+							name="responsibilities_pt"
+							rows={16}
+							defaultValue={(experience?.responsibilities_pt ?? []).join("\n")}
+							className={`${inputClass} resize-y`}
+							placeholder="One per line"
+						/>
+					</div>
+					<div>
+						<label className={labelClass}>Responsibilities (EN)</label>
+						<textarea
+							name="responsibilities_en"
+							rows={16}
+							defaultValue={(experience?.responsibilities_en ?? []).join("\n")}
+							className={`${inputClass} resize-y`}
+							placeholder="One per line"
 						/>
 					</div>
 				</div>
 
 				<div>
-					<label className={labelClass}>Location</label>
-					<input name="location" defaultValue={experience?.location ?? ""} className={inputClass} />
-				</div>
-
-				<div>
-					<label className={labelClass}>Responsibilities (PT)</label>
-					<textarea
-						name="responsibilities_pt"
-						rows={4}
-						defaultValue={(experience?.responsibilities_pt ?? []).join("\n")}
-						className={`${inputClass} resize-none`}
-						placeholder="One per line"
-					/>
-				</div>
-
-				<div>
-					<label className={labelClass}>Responsibilities (EN)</label>
-					<textarea
-						name="responsibilities_en"
-						rows={4}
-						defaultValue={(experience?.responsibilities_en ?? []).join("\n")}
-						className={`${inputClass} resize-none`}
-						placeholder="One per line"
-					/>
-				</div>
-
-				<div>
 					<label className={labelClass}>Stack</label>
-					<input
-						name="stack"
-						defaultValue={(experience?.stack ?? []).join(", ")}
-						className={inputClass}
-						placeholder="Comma-separated"
-					/>
+					<TagInput name="stack" defaultValue={experience?.stack ?? []} placeholder="add technology, press enter" />
 				</div>
 			</div>
 
-			<div className="flex gap-3 px-7 py-5 border-t border-white/10 flex-shrink-0">
+			<div className="flex justify-end gap-2 px-7 py-4 border-t border-white/10 flex-shrink-0">
 				<button
 					type="button"
 					onClick={onClose}
-					className="flex-1 px-4 py-3 rounded-xl border border-white/10 text-white/50 hover:text-white hover:bg-white/5 text-base transition"
+					className="px-4 py-2 rounded-lg border border-white/10 text-white/50 hover:text-white hover:bg-white/5 text-sm transition"
 				>
 					Cancel
 				</button>
 				<button
 					type="submit"
 					disabled={isPending}
-					className="flex-1 px-4 py-3 rounded-xl bg-primary text-white text-base font-medium hover:brightness-95 disabled:opacity-50 disabled:cursor-not-allowed transition"
+					className="px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:brightness-95 disabled:opacity-50 disabled:cursor-not-allowed transition"
 				>
 					{isPending ? "Saving..." : isEdit ? "Save" : "Create"}
 				</button>

@@ -22,12 +22,18 @@ export function AdminSidePanel({ isOpen, title, onClose, children }: AdminSidePa
 	}, [isOpen, onClose])
 
 	return (
-		<div
-			className={`flex-shrink-0 h-full overflow-hidden transition-all duration-300 ease-out border-l ${
-				isOpen ? "w-full lg:w-[500px] border-white/10" : "w-0 border-transparent"
-			}`}
-		>
-			<div className="w-full lg:w-[500px] h-full flex flex-col bg-shark">
+		<>
+			<div
+				onClick={onClose}
+				className={`fixed inset-0 z-10 bg-black/65 transition-opacity duration-300 ease-out ${
+					isOpen ? "opacity-100" : "pointer-events-none opacity-0"
+				}`}
+			/>
+			<div
+				className={`fixed top-0 right-0 bottom-0 z-20 w-full lg:w-[min(1100px,95vw)] flex flex-col bg-shark shadow-[-20px_0_60px_rgba(0,0,0,0.5)] transition-transform duration-300 ease-out ${
+					isOpen ? "translate-x-0" : "translate-x-full"
+				}`}
+			>
 				<header className="flex items-center justify-between px-7 py-5 border-b border-white/10 flex-shrink-0">
 					<h2 className="text-base font-semibold text-white">{title}</h2>
 					<button
@@ -39,6 +45,6 @@ export function AdminSidePanel({ isOpen, title, onClose, children }: AdminSidePa
 				</header>
 				<div className="flex-1 overflow-y-auto">{children}</div>
 			</div>
-		</div>
+		</>
 	)
 }

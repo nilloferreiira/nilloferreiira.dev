@@ -16,7 +16,7 @@ export function AdminExperienceCard({ experience, onEdit, onDelete, isActive, dr
 
 	return (
 		<div
-			className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all ${
+			className={`flex items-center gap-4 px-2.5 py-3.5 border-b border-[#1a2033] transition-all ${
 				isActive
 					? "bg-white/8 ring-1 ring-primary/30"
 					: "hover:bg-white/5 ring-1 ring-transparent hover:ring-white/10"

@@ -146,12 +146,12 @@ export default function AdminPage() {
 	}
 
 	return (
-		<div className="flex h-screen bg-shark text-white overflow-hidden">
+		<div className="flex h-screen bg-background text-white overflow-hidden">
 			<div className="flex-1 min-w-0 overflow-y-auto">
 				{!isLoaded ? (
 					<LoadingSpinner />
 				) : (
-					<div className="p-6 lg:p-10 max-w-4xl">
+					<div className="p-10 lg:p-20">
 						<header className="flex items-center justify-between mb-10">
 							<div>
 								<h1 className="text-xl font-bold text-white">Admin</h1>
@@ -189,7 +189,7 @@ export default function AdminPage() {
 								axis="y"
 								values={projects ?? []}
 								onReorder={(newOrder) => queryClient.setQueryData(["projects"], newOrder)}
-								className="space-y-0.5"
+								className="flex flex-col"
 							>
 								{projects?.map((p) => (
 									<SortableProjectItem
@@ -231,7 +231,7 @@ export default function AdminPage() {
 								axis="y"
 								values={experiences ?? []}
 								onReorder={(newOrder) => queryClient.setQueryData(["experiences"], newOrder)}
-								className="space-y-0.5"
+								className="flex flex-col"
 							>
 								{experiences?.map((e) => (
 									<SortableExperienceItem
