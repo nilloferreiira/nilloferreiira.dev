@@ -1,6 +1,7 @@
 import { ExternalLink, GripVertical, Pencil, Trash2 } from "lucide-react"
 import type { DragControls } from "framer-motion"
 import { Project } from "@/types/project/project"
+import { imagePlaceholderStyle } from "@/components/admin/image-placeholder"
 
 interface AdminProjectRowProps {
 	project: Project
@@ -20,7 +21,7 @@ const categoryStyle: Record<Project["category"], string> = {
 export function AdminProjectCard({ project, onEdit, onDelete, isActive, dragControls }: AdminProjectRowProps) {
 	return (
 		<div
-			className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all ${
+			className={`flex items-center gap-4 px-2.5 py-3.5 border-b border-[#1a2033] transition-all ${
 				isActive ? "bg-white/8 ring-1 ring-primary/30" : "hover:bg-white/5 ring-1 ring-transparent hover:ring-white/10"
 			}`}
 		>
@@ -41,7 +42,7 @@ export function AdminProjectCard({ project, onEdit, onDelete, isActive, dragCont
 					className="w-14 h-10 object-cover rounded-md bg-white/5 flex-shrink-0"
 				/>
 			) : (
-				<div className="w-14 h-10 rounded-md bg-white/5 flex-shrink-0" />
+				<div style={imagePlaceholderStyle} className="w-14 h-10 rounded-md flex-shrink-0" />
 			)}
 
 			<div className="min-w-0 w-40 flex-shrink-0">
@@ -54,12 +55,11 @@ export function AdminProjectCard({ project, onEdit, onDelete, isActive, dragCont
 			</div>
 
 			<div className="flex flex-wrap gap-1 flex-1 min-w-0">
-				{project.tags.slice(0, 6).map((tag) => (
-					<span key={tag} className="text-xs bg-white/8 text-white/50 px-1.5 py-0.5 rounded">
+				{project.tags.map((tag, i) => (
+					<span key={`${tag}-${i}`} className="text-xs bg-white/8 text-white/50 px-1.5 py-0.5 rounded">
 						{tag}
 					</span>
 				))}
-				{project.tags.length > 6 && <span className="text-xs text-white/30">+{project.tags.length - 6}</span>}
 			</div>
 
 			<div className="flex items-center gap-1 flex-shrink-0">
