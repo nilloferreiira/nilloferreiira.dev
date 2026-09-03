@@ -21,7 +21,7 @@ export function HeaderContent() {
 					<span> &#128075;</span>
 				</h1>
 				<p className="text-xl md:text-2xl text-muted-foreground mt-2 font-light">
-					{language === "en" ? "Software Developer" : "Desenvolvedor de Software"}
+					{language === "en" ? "Software Engineer" : "Engenheiro de Software"}
 				</p>
 			</motion.div>
 

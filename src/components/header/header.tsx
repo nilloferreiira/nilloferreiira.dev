@@ -2,11 +2,14 @@
 
 import Image from "next/image"
 import { motion } from "framer-motion"
+import { GridBackground } from "./grid-background"
 import { HeaderContent } from "./content"
 
 export function Header() {
 	return (
 		<section className="min-h-screen flex items-center justify-center relative overflow-hidden px-6">
+			<GridBackground />
+			<div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_0%,var(--color-background)_85%)]" />
 			<div
 				className="absolute top-20 left-10 w-72 h-72 bg-neon-cyan/5 rounded-full blur-[100px] animate-float pointer-events-none"
 				style={{ animationDelay: "0s" }}
@@ -16,7 +19,7 @@ export function Header() {
 				style={{ animationDelay: "3s" }}
 			/>
 
-			<div className="container max-w-5xl mx-auto">
+			<div className="container max-w-5xl mx-auto relative z-10">
 				<motion.div
 					initial={{ opacity: 0, y: 40 }}
 					animate={{ opacity: 1, y: 0 }}
