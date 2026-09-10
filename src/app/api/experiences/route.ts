@@ -1,17 +1,26 @@
 export const runtime = "nodejs"
 
 import { NextRequest, NextResponse } from "next/server"
+import { unstable_cache, revalidateTag } from "next/cache"
 import { experiences as experiencesSchema } from "@/db/schema"
 import { db } from "@/lib/db"
 import { asc, isNull, eq } from "drizzle-orm"
+import { EXPERIENCES_CACHE_TAG } from "@/lib/cache-tags"
 
-export async function GET() {
-	try {
-		const experiences = await db
+const getCachedExperiences = unstable_cache(
+	async () =>
+		db
 			.select()
 			.from(experiencesSchema)
 			.where(isNull(experiencesSchema.deletedAt))
-			.orderBy(asc(experiencesSchema.position))
+			.orderBy(asc(experiencesSchema.position)),
+	["experiences"],
+	{ tags: [EXPERIENCES_CACHE_TAG], revalidate: false }
+)
+
+export async function GET() {
+	try {
+		const experiences = await getCachedExperiences()
 
 		return NextResponse.json({ ok: true, data: experiences })
 	} catch (err) {
@@ -40,6 +49,7 @@ export async function POST(request: NextRequest) {
 			})
 			.returning()
 
+		revalidateTag(EXPERIENCES_CACHE_TAG)
 		return NextResponse.json({ ok: true, data: created })
 	} catch (err) {
 		console.error("POST /api/experiences error:", err)
@@ -70,6 +80,7 @@ export async function PUT(request: NextRequest) {
 			.where(eq(experiencesSchema.id, body.id))
 			.returning()
 
+		revalidateTag(EXPERIENCES_CACHE_TAG)
 		return NextResponse.json({ ok: true, data: updated })
 	} catch (err) {
 		console.error("PUT /api/experiences error:", err)
@@ -88,6 +99,7 @@ export async function DELETE(request: NextRequest) {
 			.set({ deletedAt: new Date() })
 			.where(eq(experiencesSchema.id, id))
 
+		revalidateTag(EXPERIENCES_CACHE_TAG)
 		return NextResponse.json({ ok: true, data: deleted })
 	} catch (err) {
 		console.error("DELETE /api/experiences error:", err)

@@ -1,9 +1,11 @@
 export const runtime = "nodejs"
 
 import { NextRequest, NextResponse } from "next/server"
+import { revalidateTag } from "next/cache"
 import { experiences as experiencesSchema } from "@/db/schema"
 import { db } from "@/lib/db"
 import { eq } from "drizzle-orm"
+import { EXPERIENCES_CACHE_TAG } from "@/lib/cache-tags"
 
 export async function PATCH(request: NextRequest) {
 	try {
@@ -19,6 +21,7 @@ export async function PATCH(request: NextRequest) {
 			}
 		})
 
+		revalidateTag(EXPERIENCES_CACHE_TAG)
 		return NextResponse.json({ ok: true })
 	} catch (err) {
 		console.error("PATCH /api/experiences/reorder error:", err)
