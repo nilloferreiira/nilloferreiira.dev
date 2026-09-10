@@ -1,17 +1,26 @@
 export const runtime = "nodejs"
 
 import { NextRequest, NextResponse } from "next/server"
+import { unstable_cache, revalidateTag } from "next/cache"
 import { projects as projectsSchema } from "@/db/schema"
 import { db } from "@/lib/db"
 import { isNull, eq, asc } from "drizzle-orm"
+import { PROJECTS_CACHE_TAG } from "@/lib/cache-tags"
 
-export async function GET() {
-	try {
-		const projects = await db
+const getCachedProjects = unstable_cache(
+	async () =>
+		db
 			.select()
 			.from(projectsSchema)
 			.where(isNull(projectsSchema.deletedAt))
-			.orderBy(asc(projectsSchema.position))
+			.orderBy(asc(projectsSchema.position)),
+	["projects"],
+	{ tags: [PROJECTS_CACHE_TAG], revalidate: false }
+)
+
+export async function GET() {
+	try {
+		const projects = await getCachedProjects()
 		return NextResponse.json({ ok: true, data: projects })
 	} catch (err) {
 		console.error("GET /api/projects error:", err)
@@ -35,6 +44,7 @@ export async function POST(request: NextRequest) {
 			})
 			.returning()
 
+		revalidateTag(PROJECTS_CACHE_TAG)
 		return NextResponse.json({ ok: true, data: created })
 	} catch (err) {
 		console.error("POST /api/projects error:", err)
@@ -61,6 +71,7 @@ export async function PUT(request: NextRequest) {
 			.where(eq(projectsSchema.id, body.id))
 			.returning()
 
+		revalidateTag(PROJECTS_CACHE_TAG)
 		return NextResponse.json({ ok: true, data: updated })
 	} catch (err) {
 		console.error("PUT /api/projects error:", err)
@@ -76,6 +87,7 @@ export async function DELETE(request: NextRequest) {
 
 		const deleted = await db.update(projectsSchema).set({ deletedAt: new Date() }).where(eq(projectsSchema.id, id))
 
+		revalidateTag(PROJECTS_CACHE_TAG)
 		return NextResponse.json({ ok: true, data: deleted })
 	} catch (err) {
 		console.error("DELETE /api/projects error:", err)
