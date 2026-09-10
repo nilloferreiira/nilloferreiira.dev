@@ -4,6 +4,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useLanguage } from "@/hooks/useLanguage"
 import { Project } from "./project"
+import { ProjectModal } from "./project-modal"
 import { Project as ProjectType } from "@/types/project/project"
 
 interface ProjectsContainerProps {
@@ -24,6 +25,7 @@ export function ProjectContainer({ projects }: ProjectsContainerProps) {
   const { language } = useLanguage()
   const [activeCategory, setActiveCategory] = useState<Category>("all")
   const [activeTags, setActiveTags] = useState<string[]>([])
+  const [selected, setSelected] = useState<ProjectType | null>(null)
 
   const allTags = Array.from(new Set((projects ?? []).flatMap((p) => p.tags)))
 
@@ -106,6 +108,7 @@ export function ProjectContainer({ projects }: ProjectsContainerProps) {
                 language={language}
                 project={project}
                 index={i}
+                onOpen={setSelected}
               />
             ))}
           </motion.div>
@@ -116,6 +119,8 @@ export function ProjectContainer({ projects }: ProjectsContainerProps) {
             {language === "pt-BR" ? "Nenhum projeto encontrado." : "No projects found."}
           </p>
         )}
+
+        <ProjectModal project={selected} language={language} onClose={() => setSelected(null)} />
       </div>
     </section>
   )
