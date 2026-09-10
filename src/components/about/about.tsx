@@ -8,21 +8,21 @@ const copy = {
 	en: {
 		kicker: "About",
 		title: "A bit about me",
-		body: "I've been a developer for over four years, working on full-stack products with a backend focus. I enjoy problems that mix clean architecture, performance, and an interface that respects the people using it. Currently at Bonsae as a Backend Developer, writing Node.js APIs and building things that need to work every day, for a lot of people.",
+		body: "I'm a fullstack developer working end-to-end on production platforms, from system design to long-term ownership. At Bonsae, I build and maintain features across an educational platform serving 3,000+ concurrent users on 50+ active instances, moving between PHP/Laravel backend services and Node.js APIs. I work AI-first, using Spec-Driven Development to keep AI-assisted work disciplined and production-grade, not a shortcut.",
 		stats: [
-			{ n: "4+", l: "years of experience" },
-			{ n: "20+", l: "projects shipped" },
-			{ n: "10+", l: "stacks under belt" }
+			{ n: "2+", l: "years of experience" },
+			{ n: "3,000+", l: "concurrent users served" },
+			{ n: "50+", l: "active instances" }
 		]
 	},
 	"pt-BR": {
 		kicker: "Sobre",
 		title: "Um pouco sobre mim",
-		body: "Sou desenvolvedor há mais de quatro anos, trabalhando em produtos full-stack com foco em backend. Gosto de problemas que misturam arquitetura limpa, performance e uma interface que respeita quem usa. Atualmente no time da Bonsae como Desenvolvedor Backend, escrevendo APIs em Node.js e construindo coisas que precisam funcionar todo dia, para muita gente.",
+		body: "Sou desenvolvedor fullstack, atuando de ponta a ponta em plataformas em produção, da arquitetura à manutenção de longo prazo. Na Bonsae, construo e mantenho features em uma plataforma educacional que atende mais de 3.000 usuários simultâneos em mais de 50 instâncias ativas, transitando entre serviços backend em PHP/Laravel e APIs em Node.js. Trabalho AI-first, usando Spec-Driven Development pra manter o trabalho assistido por IA disciplinado e pronto pra produção, não como atalho.",
 		stats: [
-			{ n: "4+", l: "anos de experiência" },
-			{ n: "20+", l: "projetos entregues" },
-			{ n: "10+", l: "stacks dominadas" }
+			{ n: "2+", l: "anos de experiência" },
+			{ n: "3.000+", l: "usuários simultâneos" },
+			{ n: "50+", l: "instâncias ativas" }
 		]
 	}
 }

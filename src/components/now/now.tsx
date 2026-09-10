@@ -8,23 +8,19 @@ const copy = {
 	en: {
 		kicker: "Now",
 		title: "What I'm working on",
-		body: "Updated May 2026.",
+		body: "Updated September 2026.",
 		items: [
-			{ label: "Studying", value: "AWS Solutions Architect Associate" },
-			{ label: "Reading", value: "Designing Data-Intensive Applications" },
-			{ label: "Building", value: "A Go CLI to automate deploys" },
-			{ label: "Listening", value: "Lo-fi & podcasts on systems architecture" }
+			{ label: "Studying", value: "Postgraduate in Applied AI Engineering" },
+			{ label: "Building", value: "Contai, a personal finance app" }
 		]
 	},
 	"pt-BR": {
 		kicker: "Agora",
 		title: "No que estou trabalhando",
-		body: "Atualizado em maio de 2026.",
+		body: "Atualizado em setembro de 2026.",
 		items: [
-			{ label: "Estudando", value: "AWS Solutions Architect Associate" },
-			{ label: "Lendo", value: "Designing Data-Intensive Applications" },
-			{ label: "Construindo", value: "Uma CLI em Go para automatizar deploys" },
-			{ label: "Ouvindo", value: "Lo-fi & podcasts sobre arquitetura de sistemas" }
+			{ label: "Estudando", value: "Pós-graduação em Engenharia de IA Aplicada" },
+			{ label: "Construindo", value: "Contai, um app de finanças pessoais" }
 		]
 	}
 }

@@ -12,8 +12,8 @@ const copy = {
 		groups: [
 			{ label: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind", "GSAP"] },
 			{ label: "Backend", items: ["Node.js", "Fastify", "Laravel", "PHP", "REST APIs"] },
-			{ label: "Database", items: ["PostgreSQL", "MySQL", "Redis", "Prisma"] },
-			{ label: "Mobile & DevOps", items: ["Flutter", "Dart", "Docker", "AWS", "Git"] }
+			{ label: "Database", items: ["PostgreSQL", "MySQL", "Redis", "Prisma", "Supabase", "Drizzle ORM"] },
+			{ label: "Mobile & DevOps", items: ["Flutter", "Dart", "React Native", "Docker", "AWS", "Git"] }
 		]
 	},
 	"pt-BR": {
@@ -22,8 +22,8 @@ const copy = {
 		groups: [
 			{ label: "Frontend", items: ["React", "Next.js", "TypeScript", "Tailwind", "GSAP"] },
 			{ label: "Backend", items: ["Node.js", "Fastify", "Laravel", "PHP", "REST APIs"] },
-			{ label: "Database", items: ["PostgreSQL", "MySQL", "Redis", "Prisma"] },
-			{ label: "Mobile & DevOps", items: ["Flutter", "Dart", "Docker", "AWS", "Git"] }
+			{ label: "Database", items: ["PostgreSQL", "MySQL", "Redis", "Prisma", "Supabase", "Drizzle ORM"] },
+			{ label: "Mobile & DevOps", items: ["Flutter", "Dart", "React Native", "Docker", "AWS", "Git"] }
 		]
 	}
 }
