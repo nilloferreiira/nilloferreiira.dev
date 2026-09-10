@@ -3,15 +3,16 @@
 import type { Project } from "@/types/project/project"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { ExternalLink, Folder } from "lucide-react"
+import { Folder } from "lucide-react"
 
 interface ProjectProps {
   project: Project
   language: "en" | "pt-BR"
   index: number
+  onOpen?: (project: Project) => void
 }
 
-export function Project({ project, language, index }: ProjectProps) {
+export function Project({ project, language, index, onOpen }: ProjectProps) {
   return (
     <motion.div
       layout
@@ -19,7 +20,16 @@ export function Project({ project, language, index }: ProjectProps) {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ delay: index * 0.05, duration: 0.35 }}
-      className="glass glass-hover rounded-xl overflow-hidden transition-all duration-300 group flex flex-col"
+      onClick={() => onOpen?.(project)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault()
+          onOpen?.(project)
+        }
+      }}
+      className="glass glass-hover rounded-xl overflow-hidden transition-all duration-300 group flex flex-col cursor-pointer"
     >
       {/* Preview area */}
       {project.imgSrc ? (
@@ -31,35 +41,11 @@ export function Project({ project, language, index }: ProjectProps) {
             height={300}
             className="w-full object-cover"
           />
-          {project.url && (
-            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <a
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-7 h-7 rounded-full bg-background/80 backdrop-blur flex items-center justify-center text-muted-foreground hover:text-primary transition-colors"
-              >
-                <ExternalLink size={13} />
-              </a>
-            </div>
-          )}
         </div>
       ) : (
         <div className="h-36 bg-gradient-to-br from-surface to-surface-raised flex items-center justify-center relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5" />
           <Folder size={36} className="text-muted-foreground/30" />
-          {project.url && (
-            <div className="absolute top-2 right-2">
-              <a
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-7 h-7 rounded-full bg-background/80 backdrop-blur flex items-center justify-center text-muted-foreground hover:text-primary transition-colors"
-              >
-                <ExternalLink size={13} />
-              </a>
-            </div>
-          )}
         </div>
       )}
 

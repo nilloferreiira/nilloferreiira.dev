@@ -24,6 +24,10 @@
   --color-glass-border: hsl(230 15% 25%);
   --color-ring: hsl(170 80% 50%);              /* focus ring = cyan */
 
+  /* Typography */
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
   /* Animations */
   --animation-typing: typing 8s steps(25) infinite;
   --animation-blink: blink 0.5s step-end infinite alternate;

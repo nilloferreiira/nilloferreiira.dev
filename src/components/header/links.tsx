@@ -1,6 +1,7 @@
 "use client"
 
 import { useLanguage } from "@/hooks/useLanguage"
+import { getCvPath } from "@/lib/cv"
 import { motion } from "framer-motion"
 import { Github, Linkedin, FileUser } from "lucide-react"
 import { tv } from "tailwind-variants"
@@ -18,7 +19,7 @@ const linkButton = tv({
 
 export function Links() {
 	const { language } = useLanguage()
-	const cvPath = language === "en" ? "danillo-ferreira-cv-en.pdf" : "danillo-ferreira-cv-pt.pdf"
+	const cvPath = getCvPath(language)
 
 	return (
 		<motion.div

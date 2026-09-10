@@ -1,16 +1,34 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Github, Linkedin, Mail, Heart } from "lucide-react"
+import { Mail, Heart } from "lucide-react"
 import { useLanguage } from "@/hooks/useLanguage"
+import { getCvPath } from "@/lib/cv"
+import { Kicker } from "@/components/ui/kicker"
+import { PillButton } from "@/components/ui/pill-button"
 
 export function Contact() {
   const { language } = useLanguage()
 
   const socials = [
-    { icon: Github, href: "https://github.com/nilloferreiira", label: "GitHub" },
-    { icon: Linkedin, href: "https://www.linkedin.com/in/nilloferreiira/", label: "LinkedIn" },
-    { icon: Mail, href: "mailto:nilloferreiira@gmail.com", label: "Email" },
+    {
+      label: "GITHUB",
+      value: "github.com/nilloferreiira",
+      href: "https://github.com/nilloferreiira",
+      external: true,
+    },
+    {
+      label: "LINKEDIN",
+      value: "linkedin.com/in/nilloferreiira",
+      href: "https://www.linkedin.com/in/nilloferreiira/",
+      external: true,
+    },
+    {
+      label: language === "pt-BR" ? "CURRÍCULO" : "RESUME",
+      value: language === "pt-BR" ? "Baixar PDF" : "Download PDF",
+      href: `/files/${getCvPath(language)}`,
+      external: false,
+    },
   ]
 
   return (
@@ -22,6 +40,9 @@ export function Contact() {
           viewport={{ once: true }}
           className="text-center space-y-6"
         >
+          <div className="flex justify-center">
+            <Kicker label={language === "pt-BR" ? "Contato" : "Contact"} />
+          </div>
           <h2 className="text-2xl md:text-3xl font-bold gradient-text">
             {language === "pt-BR" ? "Vamos conversar?" : "Let's talk?"}
           </h2>
@@ -31,17 +52,22 @@ export function Contact() {
               : "I'm always open to new opportunities and interesting projects."}
           </p>
 
-          <div className="flex items-center justify-center gap-4">
-            {socials.map(({ icon: Icon, href, label }) => (
+          <div className="flex justify-center">
+            <PillButton href="mailto:nilloferreiira@gmail.com" icon={<Mail size={18} />}>
+              {language === "pt-BR" ? "Enviar email" : "Send email"}
+            </PillButton>
+          </div>
+
+          <div className="flex items-center justify-center gap-10 pt-4">
+            {socials.map(({ label, value, href, external }) => (
               <a
                 key={label}
                 href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="glass glass-hover w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:neon-glow"
-                aria-label={label}
+                {...(external ? { target: "_blank", rel: "noopener noreferrer" } : { download: true })}
+                className="flex flex-col items-center gap-1 group"
               >
-                <Icon size={20} />
+                <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">{label}</span>
+                <span className="text-sm text-foreground group-hover:text-primary transition-colors">{value}</span>
               </a>
             ))}
           </div>
