@@ -28,12 +28,19 @@ export function ProjectModal({ project, language, onClose }: ProjectModalProps) 
 			if (e.key === "Escape") onClose()
 		}
 
+		const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
 		const previousOverflow = document.body.style.overflow
+		const previousPaddingRight = document.body.style.paddingRight
 		document.body.style.overflow = "hidden"
+		if (scrollbarWidth > 0) {
+			const currentPaddingRight = parseFloat(getComputedStyle(document.body).paddingRight) || 0
+			document.body.style.paddingRight = `${currentPaddingRight + scrollbarWidth}px`
+		}
 		window.addEventListener("keydown", onKey)
 
 		return () => {
 			document.body.style.overflow = previousOverflow
+			document.body.style.paddingRight = previousPaddingRight
 			window.removeEventListener("keydown", onKey)
 		}
 	}, [project, onClose])
@@ -79,9 +86,9 @@ export function ProjectModal({ project, language, onClose }: ProjectModalProps) 
 
 					{project.tags.length > 0 && (
 						<div className="flex flex-wrap gap-1.5">
-							{project.tags.map((tag) => (
+							{project.tags.map((tag, index) => (
 								<span
-									key={tag}
+									key={`${tag}-${index}`}
 									className="px-2.5 py-1 text-xs rounded-full bg-primary/10 text-primary border border-primary/20 font-mono"
 								>
 									{tag}
