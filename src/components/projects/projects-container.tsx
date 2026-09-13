@@ -5,10 +5,12 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useLanguage } from "@/hooks/useLanguage"
 import { Project } from "./project"
 import { ProjectModal } from "./project-modal"
+import { ProjectSkeleton } from "@/components/skeletons/project-skeleton"
 import { Project as ProjectType } from "@/types/project/project"
 
 interface ProjectsContainerProps {
   projects: ProjectType[]
+  isLoading?: boolean
 }
 
 type Category = "all" | "personal" | "freelance" | "work" | "evento"
@@ -21,7 +23,7 @@ const CATEGORIES: { value: Category; label_en: string; label_pt: string }[] = [
   { value: "evento", label_en: "Event", label_pt: "Evento" },
 ]
 
-export function ProjectContainer({ projects }: ProjectsContainerProps) {
+export function ProjectContainer({ projects, isLoading }: ProjectsContainerProps) {
   const { language } = useLanguage()
   const [activeCategory, setActiveCategory] = useState<Category>("all")
   const [activeTags, setActiveTags] = useState<string[]>([])
@@ -77,47 +79,53 @@ export function ProjectContainer({ projects }: ProjectsContainerProps) {
           })}
         </div>
 
-        {/* Tag filter pills */}
-        {allTags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mb-8">
-            {allTags.map((tag) => {
-              const isActive = activeTags.includes(tag)
-              return (
-                <button
-                  key={tag}
-                  onClick={() => toggleTag(tag)}
-                  className={`px-2.5 py-1 text-xs rounded-full font-mono transition-all duration-200 border ${
-                    isActive
-                      ? "bg-accent/20 text-accent border-accent/40"
-                      : "bg-transparent text-muted-foreground border-border hover:border-primary/30 hover:text-primary"
-                  }`}
-                >
-                  {tag}
-                </button>
-              )
-            })}
-          </div>
-        )}
+        {isLoading ? (
+          <ProjectSkeleton />
+        ) : (
+          <>
+            {/* Tag filter pills */}
+            {allTags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mb-8">
+                {allTags.map((tag) => {
+                  const isActive = activeTags.includes(tag)
+                  return (
+                    <button
+                      key={tag}
+                      onClick={() => toggleTag(tag)}
+                      className={`px-2.5 py-1 text-xs rounded-full font-mono transition-all duration-200 border ${
+                        isActive
+                          ? "bg-accent/20 text-accent border-accent/40"
+                          : "bg-transparent text-muted-foreground border-border hover:border-primary/30 hover:text-primary"
+                      }`}
+                    >
+                      {tag}
+                    </button>
+                  )
+                })}
+              </div>
+            )}
 
-        {/* Projects grid */}
-        <AnimatePresence mode="popLayout">
-          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {filteredProjects.map((project, i) => (
-              <Project
-                key={project.id}
-                language={language}
-                project={project}
-                index={i}
-                onOpen={setSelected}
-              />
-            ))}
-          </motion.div>
-        </AnimatePresence>
+            {/* Projects grid */}
+            <AnimatePresence mode="popLayout">
+              <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {filteredProjects.map((project, i) => (
+                  <Project
+                    key={project.id}
+                    language={language}
+                    project={project}
+                    index={i}
+                    onOpen={setSelected}
+                  />
+                ))}
+              </motion.div>
+            </AnimatePresence>
 
-        {filteredProjects.length === 0 && (
-          <p className="text-center text-muted-foreground py-12 font-mono text-sm">
-            {language === "pt-BR" ? "Nenhum projeto encontrado." : "No projects found."}
-          </p>
+            {filteredProjects.length === 0 && (
+              <p className="text-center text-muted-foreground py-12 font-mono text-sm">
+                {language === "pt-BR" ? "Nenhum projeto encontrado." : "No projects found."}
+              </p>
+            )}
+          </>
         )}
 
         <ProjectModal project={selected} language={language} onClose={() => setSelected(null)} />
