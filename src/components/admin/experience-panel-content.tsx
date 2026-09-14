@@ -2,8 +2,9 @@
 
 import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "@/lib/react-query"
-import type { Experience } from "@/types/experience/experience"
+import type { Experience, ExperienceInput } from "@/types/experience/experience"
 import { TagInput } from "@/components/admin/tag-input"
+import { useStacks } from "@/hooks/stacks/useStacks"
 
 interface Props {
 	experience: Experience | null
@@ -16,9 +17,10 @@ const labelClass = "block text-sm font-medium text-white/40 mb-2 uppercase track
 
 export function ExperiencePanelContent({ experience, onClose }: Props) {
 	const isEdit = experience !== null
+	const { data: stacks = [] } = useStacks()
 
 	const { mutateAsync, isPending } = useMutation({
-		mutationFn: async (data: Experience) => {
+		mutationFn: async (data: ExperienceInput) => {
 			const res = await fetch("/api/experiences", {
 				method: isEdit ? "PUT" : "POST",
 				headers: { "Content-Type": "application/json" },
@@ -41,7 +43,7 @@ export function ExperiencePanelContent({ experience, onClose }: Props) {
 	function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault()
 		const form = new FormData(e.currentTarget)
-		const data: Experience = {
+		const data: ExperienceInput = {
 			id: experience?.id ?? 0,
 			title_pt: String(form.get("title_pt") ?? ""),
 			title_en: String(form.get("title_en") ?? ""),
@@ -59,10 +61,7 @@ export function ExperiencePanelContent({ experience, onClose }: Props) {
 				.split("\n")
 				.map((s) => s.trim())
 				.filter(Boolean),
-			stack: String(form.get("stack") ?? "")
-				.split(",")
-				.map((s) => s.trim())
-				.filter(Boolean)
+			stack: form.getAll("stack").map((s) => String(s).trim()).filter(Boolean)
 		}
 		mutateAsync(data)
 	}
@@ -155,7 +154,7 @@ export function ExperiencePanelContent({ experience, onClose }: Props) {
 
 				<div>
 					<label className={labelClass}>Stack</label>
-					<TagInput name="stack" defaultValue={experience?.stack ?? []} placeholder="add technology, press enter" />
+					<TagInput name="stack" defaultValue={experience?.stack ?? []} suggestions={stacks} placeholder="add technology, press enter" />
 				</div>
 			</div>
 

@@ -3,9 +3,10 @@
 import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "@/lib/react-query"
-import { Project } from "@/types/project/project"
+import { Project, ProjectInput } from "@/types/project/project"
 import { TagInput } from "@/components/admin/tag-input"
 import { imagePlaceholderStyle } from "@/components/admin/image-placeholder"
+import { useStacks } from "@/hooks/stacks/useStacks"
 
 interface Props {
 	project: Project | null
@@ -19,9 +20,10 @@ const labelClass = "block text-sm font-medium text-white/40 mb-2 uppercase track
 export function ProjectPanelContent({ project, onClose }: Props) {
 	const isEdit = project !== null
 	const [imgSrc, setImgSrc] = useState(project?.imgSrc ?? "")
+	const { data: stacks = [] } = useStacks()
 
 	const { mutateAsync, isPending } = useMutation({
-		mutationFn: async (data: Project) => {
+		mutationFn: async (data: ProjectInput) => {
 			const res = await fetch("/api/projects", {
 				method: isEdit ? "PUT" : "POST",
 				headers: { "Content-Type": "application/json" },
@@ -44,7 +46,7 @@ export function ProjectPanelContent({ project, onClose }: Props) {
 	function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault()
 		const form = new FormData(e.currentTarget)
-		const data: Project = {
+		const data: ProjectInput = {
 			id: project?.id ?? 0,
 			title: String(form.get("title") ?? ""),
 			description_pt: String(form.get("description_pt") ?? ""),
@@ -52,10 +54,7 @@ export function ProjectPanelContent({ project, onClose }: Props) {
 			imgSrc: String(form.get("imgSrc") ?? ""),
 			url: String(form.get("url") ?? ""),
 			category: String(form.get("category") ?? "personal") as Project["category"],
-			tags: String(form.get("tags") ?? "")
-				.split(",")
-				.map((t) => t.trim())
-				.filter(Boolean)
+			tags: form.getAll("tags").map((t) => String(t).trim()).filter(Boolean)
 		}
 		mutateAsync(data)
 	}
@@ -128,7 +127,7 @@ export function ProjectPanelContent({ project, onClose }: Props) {
 					</div>
 					<div>
 						<label className={labelClass}>Tags</label>
-						<TagInput name="tags" defaultValue={project?.tags ?? []} placeholder="add tag, press enter" />
+						<TagInput name="tags" defaultValue={project?.tags ?? []} suggestions={stacks} placeholder="add tag, press enter" />
 					</div>
 				</div>
 			</div>
