@@ -57,6 +57,13 @@
       "when": 1789358121508,
       "tag": "0007_add_stacks_tables",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1789358324945,
+      "tag": "0008_populate_stacks_from_arrays",
+      "breakpoints": true
     }
   ]
 }
