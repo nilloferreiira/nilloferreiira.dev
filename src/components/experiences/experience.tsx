@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { CalendarDays, ChevronRight, MapPin } from "lucide-react"
+import type { StackRef } from "@/types/stack/stack"
 
 interface ExperienceProps {
   language: "en" | "pt-BR"
@@ -15,7 +16,7 @@ interface ExperienceProps {
   location: string
   responsibilities_en: string[]
   responsibilities_pt: string[]
-  stack: string[]
+  stack: StackRef[]
   index: number
   bare?: boolean
 }
@@ -114,10 +115,10 @@ export function Experience({
         <div className="flex flex-wrap gap-2">
           {stack.map((tech) => (
             <span
-              key={tech}
+              key={tech.id}
               className="border border-primary/40 text-primary text-xs rounded-full px-3 py-1"
             >
-              {tech}
+              {tech.name}
             </span>
           ))}
         </div>

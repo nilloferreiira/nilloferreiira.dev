@@ -86,12 +86,12 @@ export function ProjectModal({ project, language, onClose }: ProjectModalProps) 
 
 					{project.tags.length > 0 && (
 						<div className="flex flex-wrap gap-1.5">
-							{project.tags.map((tag, index) => (
+							{project.tags.map((tag) => (
 								<span
-									key={`${tag}-${index}`}
+									key={tag.id}
 									className="px-2.5 py-1 text-xs rounded-full bg-primary/10 text-primary border border-primary/20 font-mono"
 								>
-									{tag}
+									{tag.name}
 								</span>
 							))}
 						</div>

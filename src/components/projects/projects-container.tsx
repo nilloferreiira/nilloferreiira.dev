@@ -26,21 +26,21 @@ const CATEGORIES: { value: Category; label_en: string; label_pt: string }[] = [
 export function ProjectContainer({ projects, isLoading }: ProjectsContainerProps) {
   const { language } = useLanguage()
   const [activeCategory, setActiveCategory] = useState<Category>("all")
-  const [activeTags, setActiveTags] = useState<string[]>([])
+  const [activeTagIds, setActiveTagIds] = useState<number[]>([])
   const [selected, setSelected] = useState<ProjectType | null>(null)
 
-  const allTags = Array.from(new Set((projects ?? []).flatMap((p) => p.tags)))
+  const allTags = Array.from(
+    new Map((projects ?? []).flatMap((p) => p.tags).map((t) => [t.id, t])).values()
+  )
 
   const filteredProjects = (projects ?? []).filter((p) => {
     const categoryMatch = activeCategory === "all" || p.category === activeCategory
-    const tagMatch = activeTags.length === 0 || activeTags.every((t) => p.tags.includes(t))
+    const tagMatch = activeTagIds.length === 0 || activeTagIds.every((id) => p.tags.some((t) => t.id === id))
     return categoryMatch && tagMatch
   })
 
-  function toggleTag(tag: string) {
-    setActiveTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    )
+  function toggleTag(id: number) {
+    setActiveTagIds((prev) => (prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]))
   }
 
   return (
@@ -87,18 +87,18 @@ export function ProjectContainer({ projects, isLoading }: ProjectsContainerProps
             {allTags.length > 0 && (
               <div className="flex flex-wrap gap-1.5 mb-8">
                 {allTags.map((tag) => {
-                  const isActive = activeTags.includes(tag)
+                  const isActive = activeTagIds.includes(tag.id)
                   return (
                     <button
-                      key={tag}
-                      onClick={() => toggleTag(tag)}
+                      key={tag.id}
+                      onClick={() => toggleTag(tag.id)}
                       className={`px-2.5 py-1 text-xs rounded-full font-mono transition-all duration-200 border ${
                         isActive
                           ? "bg-accent/20 text-accent border-accent/40"
                           : "bg-transparent text-muted-foreground border-border hover:border-primary/30 hover:text-primary"
                       }`}
                     >
-                      {tag}
+                      {tag.name}
                     </button>
                   )
                 })}
