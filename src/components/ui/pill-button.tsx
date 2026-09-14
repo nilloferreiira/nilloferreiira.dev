@@ -1,7 +1,8 @@
 import { tv } from "tailwind-variants"
+import { MagneticButton } from "@/components/ui/magnetic-button"
 
 const pillButton = tv({
-	base: "inline-flex items-center gap-2 px-8 py-3 rounded-full font-medium transition-all duration-300",
+	base: "inline-flex items-center gap-2 px-8 py-3 rounded-full font-medium transition-[background,border-color,box-shadow] duration-300",
 	variants: {
 		variant: {
 			primary: "bg-gradient-to-r from-primary/20 to-accent/20 border border-primary/30 hover:border-primary/60 hover:neon-glow",
@@ -23,13 +24,13 @@ interface PillButtonProps {
 
 export function PillButton({ href, children, variant = "primary", external, icon }: PillButtonProps) {
 	return (
-		<a
+		<MagneticButton
 			href={href}
 			className={pillButton({ variant })}
 			{...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
 		>
 			{children}
 			{icon}
-		</a>
+		</MagneticButton>
 	)
 }

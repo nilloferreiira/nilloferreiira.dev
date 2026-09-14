@@ -3,6 +3,7 @@
 import { useLanguage } from "@/hooks/useLanguage"
 import { motion } from "framer-motion"
 import { Mail } from "lucide-react"
+import { MagneticButton } from "@/components/ui/magnetic-button"
 import { Links } from "./links"
 
 export function HeaderContent() {
@@ -50,12 +51,12 @@ export function HeaderContent() {
 				transition={{ delay: 0.7 }}
 				className="flex justify-center md:justify-start"
 			>
-				<a
+				<MagneticButton
 					href="mailto:nilloferreiira@gmail.com"
-					className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-gradient-to-r from-primary/20 to-accent/20 border border-primary/30 hover:border-primary/60 transition-all duration-300 hover:neon-glow font-medium"
+					className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-gradient-to-r from-primary/20 to-accent/20 border border-primary/30 hover:border-primary/60 transition-[background,border-color,box-shadow] duration-300 hover:neon-glow font-medium"
 				>
 					{language === "en" ? "Contact me" : "Me contate"} <Mail size={18} />
-				</a>
+				</MagneticButton>
 			</motion.div>
 		</div>
 	)
