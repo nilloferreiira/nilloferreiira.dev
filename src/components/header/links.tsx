@@ -5,11 +5,12 @@ import { getCvPath } from "@/lib/cv"
 import { motion } from "framer-motion"
 import { Github, Linkedin, FileUser } from "lucide-react"
 import { tv } from "tailwind-variants"
+import { MagneticButton } from "@/components/ui/magnetic-button"
 
 const linkButton = tv({
 	variants: {
 		variant: {
-			glass: "glass glass-hover neon-glow rounded-full size-12 flex items-center justify-center transition-all",
+			glass: "glass glass-hover neon-glow rounded-full size-12 flex items-center justify-center transition-[background,border-color,box-shadow]",
 		},
 	},
 	defaultVariants: {
@@ -29,27 +30,27 @@ export function Links() {
 			className="flex items-center gap-3 justify-center md:justify-start"
 			data-slot="social-links"
 		>
-			<a
+			<MagneticButton
 				href="https://github.com/nilloferreiira"
 				target="_blank"
 				className={linkButton({ variant: "glass" })}
 			>
 				<span><Github className="text-foreground" /></span>
-			</a>
-			<a
+			</MagneticButton>
+			<MagneticButton
 				href="https://www.linkedin.com/in/nilloferreiira/"
 				target="_blank"
 				className={linkButton({ variant: "glass" })}
 			>
 				<span><Linkedin className="text-foreground" /></span>
-			</a>
-			<a
+			</MagneticButton>
+			<MagneticButton
 				href={`/files/${cvPath}`}
 				download
 				className={linkButton({ variant: "glass" })}
 			>
 				<span><FileUser className="text-foreground" /></span>
-			</a>
+			</MagneticButton>
 		</motion.div>
 	)
 }
