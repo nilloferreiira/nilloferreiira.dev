@@ -36,6 +36,7 @@ export function ExperiencePanelContent({ experience, onClose }: Props) {
 				if (isEdit) return oldData.map((item) => (item.id === res[0].id ? res[0] : item))
 				return [...oldData, res[0]]
 			})
+			queryClient.invalidateQueries({ queryKey: ["stacks"] })
 			onClose()
 		}
 	})

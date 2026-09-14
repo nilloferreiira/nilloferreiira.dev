@@ -64,7 +64,7 @@ export function TagInput({ name, defaultValue = [], suggestions, placeholder }: 
 						setShowSuggestions(true)
 					}}
 					onKeyDown={onKeyDown}
-					onBlur={() => setTimeout(() => addChip(draft), 100)}
+					onBlur={() => addChip(draft)}
 					onFocus={() => setShowSuggestions(true)}
 					placeholder={placeholder}
 					className="flex-1 min-w-[140px] bg-transparent border-none outline-none text-white text-sm placeholder:text-white/20 px-1 py-1"
