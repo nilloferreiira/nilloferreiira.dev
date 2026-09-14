@@ -15,6 +15,7 @@ export function TagInput({ name, defaultValue = [], suggestions, placeholder }: 
 	const [chips, setChips] = useState<string[]>(defaultValue.map((s) => s.name))
 	const [draft, setDraft] = useState("")
 	const [showSuggestions, setShowSuggestions] = useState(false)
+	const [highlightedIndex, setHighlightedIndex] = useState(0)
 
 	const filteredSuggestions = suggestions.filter(
 		(s) => draft.trim().length > 0 && s.name.toLowerCase().includes(draft.trim().toLowerCase()) && !chips.includes(s.name)
@@ -26,6 +27,7 @@ export function TagInput({ name, defaultValue = [], suggestions, placeholder }: 
 		setChips((c) => [...c, val])
 		setDraft("")
 		setShowSuggestions(false)
+		setHighlightedIndex(0)
 	}
 
 	function removeChip(idx: number) {
@@ -33,9 +35,26 @@ export function TagInput({ name, defaultValue = [], suggestions, placeholder }: 
 	}
 
 	function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+		const hasSuggestions = showSuggestions && filteredSuggestions.length > 0
+
+		if (hasSuggestions && e.key === "ArrowDown") {
+			e.preventDefault()
+			setHighlightedIndex((i) => (i + 1) % filteredSuggestions.length)
+			return
+		}
+		if (hasSuggestions && e.key === "ArrowUp") {
+			e.preventDefault()
+			setHighlightedIndex((i) => (i - 1 + filteredSuggestions.length) % filteredSuggestions.length)
+			return
+		}
+		if (hasSuggestions && e.key === "Tab") {
+			e.preventDefault()
+			addChip(filteredSuggestions[highlightedIndex].name)
+			return
+		}
 		if (e.key === "Enter") {
 			e.preventDefault()
-			addChip(draft)
+			addChip(hasSuggestions ? filteredSuggestions[highlightedIndex].name : draft)
 		}
 	}
 
@@ -62,6 +81,7 @@ export function TagInput({ name, defaultValue = [], suggestions, placeholder }: 
 					onChange={(e) => {
 						setDraft(e.target.value)
 						setShowSuggestions(true)
+						setHighlightedIndex(0)
 					}}
 					onKeyDown={onKeyDown}
 					onBlur={() => addChip(draft)}
@@ -75,13 +95,16 @@ export function TagInput({ name, defaultValue = [], suggestions, placeholder }: 
 			</div>
 			{showSuggestions && filteredSuggestions.length > 0 && (
 				<div className="absolute z-10 mt-1 w-full max-h-48 overflow-y-auto rounded-lg bg-[#1a2033] border border-white/10 shadow-lg">
-					{filteredSuggestions.map((s) => (
+					{filteredSuggestions.map((s, i) => (
 						<button
 							key={s.id}
 							type="button"
 							onMouseDown={(e) => e.preventDefault()}
+							onMouseEnter={() => setHighlightedIndex(i)}
 							onClick={() => addChip(s.name)}
-							className="block w-full text-left px-3 py-2 text-sm text-[#c3cadd] hover:bg-white/10 transition"
+							className={`block w-full text-left px-3 py-2 text-sm text-[#c3cadd] transition ${
+								i === highlightedIndex ? "bg-white/10" : "hover:bg-white/10"
+							}`}
 						>
 							{s.name}
 						</button>
