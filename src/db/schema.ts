@@ -9,7 +9,6 @@ export const projects = pgTable("projects", {
 	url: varchar("url").notNull(),
 	position: serial("position").notNull(),
 	category: text("category").notNull().default("personal"),
-	tags: text("tags").array().notNull().default([]),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 	updatedAt: timestamp("updated_at").defaultNow().notNull(),
 	deletedAt: timestamp("deleted_at")
@@ -28,7 +27,6 @@ export const experiences = pgTable("experiences", {
 	location: varchar("location").default("").notNull(),
 	responsibilities_en: text("responsibilities_en").array().notNull().default([]),
 	responsibilities_pt: text("responsibilities_pt").array().notNull().default([]),
-	stack: text("stack").array().notNull().default([]),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 	updatedAt: timestamp("updated_at").defaultNow().notNull(),
 	deletedAt: timestamp("deleted_at")

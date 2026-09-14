@@ -64,6 +64,13 @@
       "when": 1789358324945,
       "tag": "0008_populate_stacks_from_arrays",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1789359099388,
+      "tag": "0009_drop_tags_and_stack_arrays",
+      "breakpoints": true
     }
   ]
 }

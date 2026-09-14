@@ -55,9 +55,9 @@ export function AdminProjectCard({ project, onEdit, onDelete, isActive, dragCont
 			</div>
 
 			<div className="flex flex-wrap gap-1 flex-1 min-w-0">
-				{project.tags.map((tag, i) => (
-					<span key={`${tag}-${i}`} className="text-xs bg-white/8 text-white/50 px-1.5 py-0.5 rounded">
-						{tag}
+				{project.tags.map((tag) => (
+					<span key={tag.id} className="text-xs bg-white/8 text-white/50 px-1.5 py-0.5 rounded">
+						{tag.name}
 					</span>
 				))}
 			</div>
