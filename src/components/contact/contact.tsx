@@ -32,7 +32,7 @@ export function Contact() {
   ]
 
   return (
-    <footer className="py-16 px-6 border-t border-border/50">
+    <footer className="py-16 px-6 border-t border-border/50" id="contact">
       <div className="container max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

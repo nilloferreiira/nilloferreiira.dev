@@ -5,7 +5,7 @@ import { Contact } from "@/components/contact/contact"
 import { Education } from "@/components/education/education"
 import { ExperienceContainer } from "@/components/experiences/experiences-container"
 import { Header } from "@/components/header/header"
-import { SwitchLanguage } from "@/components/language/switch"
+import { Navbar } from "@/components/navbar/navbar"
 import { Now } from "@/components/now/now"
 import { ProjectContainer } from "@/components/projects/projects-container"
 import { Stack } from "@/components/stack/stack"
@@ -17,9 +17,7 @@ export default function Home() {
 	const { data: experiences, isLoading: isLoadingExperiences } = useExperiences()
 	return (
 		<div className="min-h-screen relative">
-			<div className="fixed top-6 right-6 z-50">
-				<SwitchLanguage />
-			</div>
+			<Navbar />
 			<Header />
 			<main className="w-full flex flex-col">
 				<About />
