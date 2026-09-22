@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import { Mail, Heart } from "lucide-react"
 import { useLanguage } from "@/hooks/useLanguage"
-import { getCvPath } from "@/lib/cv"
+import { getCvUrl, getCvDownloadName } from "@/lib/cv"
 import { Kicker } from "@/components/ui/kicker"
 import { PillButton } from "@/components/ui/pill-button"
 
@@ -26,7 +26,7 @@ export function Contact() {
     {
       label: language === "pt-BR" ? "CURRÍCULO" : "RESUME",
       value: language === "pt-BR" ? "Baixar PDF" : "Download PDF",
-      href: `/files/${getCvPath(language)}`,
+      href: getCvUrl(language),
       external: false,
     },
   ]
@@ -63,7 +63,7 @@ export function Contact() {
               <a
                 key={label}
                 href={href}
-                {...(external ? { target: "_blank", rel: "noopener noreferrer" } : { download: true })}
+                {...(external ? { target: "_blank", rel: "noopener noreferrer" } : { download: getCvDownloadName(language) })}
                 className="flex flex-col items-center gap-1 group"
               >
                 <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">{label}</span>

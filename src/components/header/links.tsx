@@ -1,7 +1,7 @@
 "use client"
 
 import { useLanguage } from "@/hooks/useLanguage"
-import { getCvPath } from "@/lib/cv"
+import { getCvUrl, getCvDownloadName } from "@/lib/cv"
 import { motion } from "framer-motion"
 import { Github, Linkedin, FileUser } from "lucide-react"
 import { tv } from "tailwind-variants"
@@ -20,7 +20,8 @@ const linkButton = tv({
 
 export function Links() {
 	const { language } = useLanguage()
-	const cvPath = getCvPath(language)
+	const cvUrl = getCvUrl(language)
+	const cvDownloadName = getCvDownloadName(language)
 
 	return (
 		<motion.div
@@ -45,8 +46,8 @@ export function Links() {
 				<span><Linkedin className="text-foreground" /></span>
 			</MagneticButton>
 			<MagneticButton
-				href={`/files/${cvPath}`}
-				download
+				href={cvUrl}
+				download={cvDownloadName}
 				className={linkButton({ variant: "glass" })}
 			>
 				<span><FileUser className="text-foreground" /></span>

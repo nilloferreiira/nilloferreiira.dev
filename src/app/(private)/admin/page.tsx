@@ -5,6 +5,7 @@ import { SortableProjectItem } from "@/components/admin/sortable-project-item"
 import { AdminSidePanel } from "@/components/admin/admin-side-panel"
 import { ProjectPanelContent } from "@/components/admin/project-panel-content"
 import { ExperiencePanelContent } from "@/components/admin/experience-panel-content"
+import { CvSection } from "@/components/admin/cv-section"
 import { LoadingSpinner } from "@/components/loading/loading"
 import { useExperiences } from "@/hooks/experiences/useExperiences"
 import { useProjects } from "@/hooks/projects/useProjects"
@@ -165,6 +166,8 @@ export default function AdminPage() {
 								Sign out
 							</button>
 						</header>
+
+						<CvSection />
 
 						<section className="mb-10">
 							<div className="flex items-center justify-between mb-3">
