@@ -58,7 +58,7 @@ export function Contact() {
             </PillButton>
           </div>
 
-          <div className="flex items-center justify-center gap-10 pt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 pt-4">
             {socials.map(({ label, value, href, external }) => (
               <a
                 key={label}
