@@ -6,6 +6,7 @@ import { AdminSidePanel } from "@/components/admin/admin-side-panel"
 import { ProjectPanelContent } from "@/components/admin/project-panel-content"
 import { ExperiencePanelContent } from "@/components/admin/experience-panel-content"
 import { CvSection } from "@/components/admin/cv-section"
+import { CacheSection } from "@/components/admin/cache-section"
 import { LoadingSpinner } from "@/components/loading/loading"
 import { useExperiences } from "@/hooks/experiences/useExperiences"
 import { useProjects } from "@/hooks/projects/useProjects"
@@ -168,6 +169,8 @@ export default function AdminPage() {
 						</header>
 
 						<CvSection />
+
+						<CacheSection />
 
 						<section className="mb-10">
 							<div className="flex items-center justify-between mb-3">
