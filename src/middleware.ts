@@ -8,11 +8,13 @@ export async function middleware(request: NextRequest) {
 	const isLoginPath = pathname === "/admin/login"
 	const isApiPath = pathname.startsWith("/api/projects") || pathname.startsWith("/api/experiences")
 	const isCvApiPath = pathname.startsWith("/api/cv")
+	const isCacheApiPath = pathname.startsWith("/api/cache")
 
 	// admin pages: every method needs a session (except the login page itself)
 	// projects/experiences api routes: public GET reads stay open, everything else needs a session
-	// cv api route: no public use case at all, every method needs a session
-	const requiresAuth = (isAdminPath && !isLoginPath) || (isApiPath && request.method !== "GET") || isCvApiPath
+	// cv and cache api routes: no public use case at all, every method needs a session
+	const requiresAuth =
+		(isAdminPath && !isLoginPath) || (isApiPath && request.method !== "GET") || isCvApiPath || isCacheApiPath
 
 	if (!requiresAuth) {
 		return NextResponse.next()
@@ -25,7 +27,7 @@ export async function middleware(request: NextRequest) {
 		return response
 	}
 
-	if (isApiPath || isCvApiPath) {
+	if (isApiPath || isCvApiPath || isCacheApiPath) {
 		return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 	}
 
@@ -35,5 +37,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ["/admin/:path*", "/api/projects/:path*", "/api/experiences/:path*", "/api/cv/:path*"]
+	matcher: ["/admin/:path*", "/api/projects/:path*", "/api/experiences/:path*", "/api/cv/:path*", "/api/cache/:path*"]
 }
