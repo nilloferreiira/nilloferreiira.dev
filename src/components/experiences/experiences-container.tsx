@@ -88,7 +88,7 @@ export function ExperienceContainer({ experiences, isLoading }: ExperiencesConta
                   {rest.map((experience, i) => (
                     <div key={experience.id} className="relative pb-10 last:pb-0">
                       {/* Timeline dot */}
-                      <div className="absolute left-0 -translate-x-[4.5px] top-3 w-[15px] h-[15px] rounded-full border-2 border-primary bg-background" />
+                      <div className="absolute -left-8 top-8 w-[15px] h-[15px] rounded-full border-2 border-primary bg-background" />
                       <Experience
                         index={i + 1}
                         language={language}
