@@ -1,11 +1,11 @@
 import { tv } from "tailwind-variants"
 
 const tag = tv({
-	base: "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-mono border transition-colors",
+	base: "inline-flex items-center rounded-md px-[9px] py-1 font-mono text-[11px] border transition-colors",
 	variants: {
 		active: {
-			true: "bg-accent/20 text-accent border-accent/40",
-			false: "bg-transparent text-muted-foreground border-border"
+			true: "bg-v-soft text-v-accent border-v-accent",
+			false: "bg-v-panel text-v-dim border-v-line"
 		}
 	},
 	defaultVariants: {

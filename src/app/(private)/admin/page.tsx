@@ -6,6 +6,7 @@ import { AdminSidePanel } from "@/components/admin/admin-side-panel"
 import { ProjectPanelContent } from "@/components/admin/project-panel-content"
 import { ExperiencePanelContent } from "@/components/admin/experience-panel-content"
 import { CvSection } from "@/components/admin/cv-section"
+import { ProfilePictureSection } from "@/components/admin/profile-picture-section"
 import { CacheSection } from "@/components/admin/cache-section"
 import { LoadingSpinner } from "@/components/loading/loading"
 import { useExperiences } from "@/hooks/experiences/useExperiences"
@@ -167,6 +168,8 @@ export default function AdminPage() {
 								Sign out
 							</button>
 						</header>
+
+						<ProfilePictureSection />
 
 						<CvSection />
 

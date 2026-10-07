@@ -2,11 +2,11 @@ import { tv } from "tailwind-variants"
 import { MagneticButton } from "@/components/ui/magnetic-button"
 
 const pillButton = tv({
-	base: "inline-flex items-center gap-2 px-8 py-3 rounded-full font-medium transition-[background,border-color,box-shadow] duration-300",
+	base: "inline-flex items-center gap-2.5 px-6 py-3.5 max-[680px]:px-5 max-[680px]:py-[13px] rounded-full border text-[15px] max-[680px]:text-sm font-bold cursor-pointer transition-[background,border-color,color] duration-200",
 	variants: {
 		variant: {
-			primary: "bg-gradient-to-r from-primary/20 to-accent/20 border border-primary/30 hover:border-primary/60 hover:neon-glow",
-			secondary: "glass glass-hover border border-border hover:border-primary/40"
+			primary: "bg-v-text text-v-bg border-v-text hover:bg-v-accent hover:border-v-accent hover:text-v-bg",
+			secondary: "bg-transparent text-v-text border-v-line2 hover:bg-v-panel2 hover:text-v-text"
 		}
 	},
 	defaultVariants: {
@@ -20,17 +20,19 @@ interface PillButtonProps {
 	variant?: "primary" | "secondary"
 	external?: boolean
 	icon?: React.ReactNode
+	iconPosition?: "start" | "end"
 }
 
-export function PillButton({ href, children, variant = "primary", external, icon }: PillButtonProps) {
+export function PillButton({ href, children, variant = "primary", external, icon, iconPosition = "end" }: PillButtonProps) {
 	return (
 		<MagneticButton
 			href={href}
 			className={pillButton({ variant })}
 			{...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
 		>
+			{iconPosition === "start" && icon}
 			{children}
-			{icon}
+			{iconPosition === "end" && icon}
 		</MagneticButton>
 	)
 }

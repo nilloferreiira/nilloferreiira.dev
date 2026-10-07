@@ -1,128 +1,68 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { CalendarDays, ChevronRight, MapPin } from "lucide-react"
-import type { StackRef } from "@/types/stack/stack"
+import type { Experience as ExperienceType } from "@/types/experience/experience"
+import { Tag } from "@/components/ui/tag"
 
 interface ExperienceProps {
-  language: "en" | "pt-BR"
-  title_en: string
-  title_pt: string
-  description_en: string
-  description_pt: string
-  company: string
-  start_year: number | null
-  end_year: number | null
-  location: string
-  responsibilities_en: string[]
-  responsibilities_pt: string[]
-  stack: StackRef[]
-  index: number
-  bare?: boolean
+	experience: ExperienceType
+	language: "en" | "pt-BR"
+	current?: boolean
 }
 
-export function Experience({
-  language,
-  title_en,
-  title_pt,
-  description_en,
-  description_pt,
-  company,
-  start_year,
-  end_year,
-  location,
-  responsibilities_en,
-  responsibilities_pt,
-  stack,
-  index,
-  bare,
-}: ExperienceProps) {
-  const title = language === "en" ? title_en : title_pt
-  const description = language === "en" ? description_en : description_pt
-  const responsibilities = language === "en" ? responsibilities_en : responsibilities_pt
+export function Experience({ experience, language, current }: ExperienceProps) {
+	const isPt = language === "pt-BR"
+	const title = isPt ? experience.title_pt : experience.title_en
+	const description = isPt ? experience.description_pt : experience.description_en
+	const responsibilities = isPt ? experience.responsibilities_pt : experience.responsibilities_en
+	const descriptionLines = description.split("\n").filter(Boolean)
+	const period =
+		experience.start_year !== null
+			? `${experience.start_year} — ${experience.end_year ?? (isPt ? "Atual" : "Present")}`
+			: null
 
-  const descriptionLines = description.split("\n").filter(Boolean)
+	return (
+		<div className="grid grid-cols-[minmax(0,2fr)_minmax(0,6fr)_minmax(0,3fr)] max-[1080px]:grid-cols-[minmax(0,2fr)_minmax(0,6fr)] max-[680px]:grid-cols-1 gap-[clamp(16px,3vw,40px)] max-[680px]:gap-3 py-8 border-t border-v-line">
+			<div className="flex flex-col max-[680px]:flex-row max-[680px]:justify-between gap-2 font-mono text-xs text-v-muted">
+				{period && <span>{period}</span>}
+				{current ? (
+					<span className="inline-flex items-center gap-1.5 text-[11px] text-v-ok">
+						<i className="pulse-dot w-1.5 h-1.5" />
+						{isPt ? "atual" : "current"}
+					</span>
+				) : (
+					experience.location && <span>{experience.location}</span>
+				)}
+			</div>
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: -30 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.15, duration: 0.5 }}
-      className={bare ? "space-y-4" : "glass glass-hover rounded-xl p-6 space-y-4"}
-    >
-      {/* Company + Role */}
-      <div className="space-y-1">
-        <h2 className="text-foreground font-bold text-2xl lg:text-3xl">{company}</h2>
-        <p className="text-primary font-medium text-lg">{title}</p>
-      </div>
+			<div>
+				{/* company is optional in the DB: fall back to the role as the heading */}
+				<h3 className="m-0 text-[clamp(24px,2.4vw,32px)] font-bold tracking-[-0.025em] text-v-text">
+					{experience.company || title}
+				</h3>
+				{experience.company && <div className="mt-1 font-mono text-[13px] text-v-accent">{title}</div>}
+				{descriptionLines.map((line, i) => (
+					<p key={i} className="mt-3.5 mb-3 text-v-dim text-[15px] leading-[1.6] text-pretty">
+						{line}
+					</p>
+				))}
+				{responsibilities.length > 0 && (
+					<ul className="m-0 p-0 list-none flex flex-col gap-1.5">
+						{responsibilities.map((item, i) => (
+							<li key={i} className="flex gap-2.5 text-sm text-v-dim before:content-['→'] before:font-mono before:text-v-muted">
+								{item}
+							</li>
+						))}
+					</ul>
+				)}
+			</div>
 
-      {/* Date + Location */}
-      {(start_year !== null || !!location) && (
-        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-          {start_year !== null && (
-            <span className="flex items-center gap-1">
-              <CalendarDays size={14} />
-              {start_year} – {end_year ?? (language === "pt-BR" ? "Atual" : "Present")}
-            </span>
-          )}
-          {location && (
-            <span className="flex items-center gap-1">
-              <MapPin size={14} />
-              {location}
-            </span>
-          )}
-        </div>
-      )}
-
-      {/* Description */}
-      {descriptionLines.length > 0 && (
-        <div className="space-y-2">
-          {descriptionLines.map((line, i) => (
-            <motion.p
-              key={i}
-              initial={{ opacity: 0, x: -10 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 * i, duration: 0.4 }}
-              className="text-muted-foreground text-base leading-relaxed"
-            >
-              {line}
-            </motion.p>
-          ))}
-        </div>
-      )}
-
-      {/* Responsibilities */}
-      {responsibilities.length > 0 && (
-        <div className="space-y-2">
-          <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-            {language === "pt-BR" ? "Responsabilidades" : "Responsibilities"}
-          </p>
-          <ul className="space-y-1.5">
-            {responsibilities.map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-muted-foreground text-base">
-                <ChevronRight className="w-4 h-4 mt-0.5 shrink-0 text-primary/70" />
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {/* Stack chips */}
-      {stack.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {stack.map((tech) => (
-            <span
-              key={tech.id}
-              className="border border-primary/40 text-primary text-xs rounded-full px-3 py-1"
-            >
-              {tech.name}
-            </span>
-          ))}
-        </div>
-      )}
-    </motion.div>
-  )
+			{experience.stack.length > 0 && (
+				<div className="flex flex-wrap content-start gap-1.5 max-[1080px]:col-start-2 max-[680px]:col-start-auto">
+					{experience.stack.map((tech) => (
+						<Tag key={tech.id}>{tech.name}</Tag>
+					))}
+				</div>
+			)}
+		</div>
+	)
 }

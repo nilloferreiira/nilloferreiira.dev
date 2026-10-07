@@ -1,5 +1,6 @@
 "use client"
 
+import { useId } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "@/lib/react-query"
 import type { Experience, ExperienceInput } from "@/types/experience/experience"
@@ -16,6 +17,7 @@ const inputClass =
 const labelClass = "block text-sm font-medium text-white/40 mb-2 uppercase tracking-wider"
 
 export function ExperiencePanelContent({ experience, onClose }: Props) {
+	const fieldId = useId()
 	const isEdit = experience !== null
 	const { data: stacks = [] } = useStacks()
 
@@ -71,18 +73,19 @@ export function ExperiencePanelContent({ experience, onClose }: Props) {
 		<form onSubmit={handleSubmit} className="flex flex-col min-h-full">
 			<div className="flex-1 px-7 py-6 space-y-6">
 				<div>
-					<label className={labelClass}>Role (PT)</label>
-					<input name="title_pt" required defaultValue={experience?.title_pt ?? ""} className={inputClass} />
+					<label htmlFor={`${fieldId}-title_pt`} className={labelClass}>Role (PT)</label>
+					<input id={`${fieldId}-title_pt`} name="title_pt" required defaultValue={experience?.title_pt ?? ""} className={inputClass} />
 				</div>
 
 				<div>
-					<label className={labelClass}>Role (EN)</label>
-					<input name="title_en" defaultValue={experience?.title_en ?? ""} className={inputClass} />
+					<label htmlFor={`${fieldId}-title_en`} className={labelClass}>Role (EN)</label>
+					<input id={`${fieldId}-title_en`} name="title_en" defaultValue={experience?.title_en ?? ""} className={inputClass} />
 				</div>
 
 				<div>
-					<label className={labelClass}>Description (PT)</label>
+					<label htmlFor={`${fieldId}-description_pt`} className={labelClass}>Description (PT)</label>
 					<textarea
+						id={`${fieldId}-description_pt`}
 						name="description_pt"
 						rows={7}
 						defaultValue={experience?.description_pt ?? ""}
@@ -91,8 +94,9 @@ export function ExperiencePanelContent({ experience, onClose }: Props) {
 				</div>
 
 				<div>
-					<label className={labelClass}>Description (EN)</label>
+					<label htmlFor={`${fieldId}-description_en`} className={labelClass}>Description (EN)</label>
 					<textarea
+						id={`${fieldId}-description_en`}
 						name="description_en"
 						rows={7}
 						defaultValue={experience?.description_en ?? ""}
@@ -102,12 +106,13 @@ export function ExperiencePanelContent({ experience, onClose }: Props) {
 
 				<div className="grid grid-cols-4 gap-4">
 					<div>
-						<label className={labelClass}>Company</label>
-						<input name="company" defaultValue={experience?.company ?? ""} className={inputClass} />
+						<label htmlFor={`${fieldId}-company`} className={labelClass}>Company</label>
+						<input id={`${fieldId}-company`} name="company" defaultValue={experience?.company ?? ""} className={inputClass} />
 					</div>
 					<div>
-						<label className={labelClass}>Start Year</label>
+						<label htmlFor={`${fieldId}-start_year`} className={labelClass}>Start Year</label>
 						<input
+							id={`${fieldId}-start_year`}
 							name="start_year"
 							type="number"
 							defaultValue={experience?.start_year ?? ""}
@@ -115,8 +120,9 @@ export function ExperiencePanelContent({ experience, onClose }: Props) {
 						/>
 					</div>
 					<div>
-						<label className={labelClass}>End Year</label>
+						<label htmlFor={`${fieldId}-end_year`} className={labelClass}>End Year</label>
 						<input
+							id={`${fieldId}-end_year`}
 							name="end_year"
 							type="number"
 							defaultValue={experience?.end_year ?? ""}
@@ -125,15 +131,16 @@ export function ExperiencePanelContent({ experience, onClose }: Props) {
 						/>
 					</div>
 					<div>
-						<label className={labelClass}>Location</label>
-						<input name="location" defaultValue={experience?.location ?? ""} className={inputClass} />
+						<label htmlFor={`${fieldId}-location`} className={labelClass}>Location</label>
+						<input id={`${fieldId}-location`} name="location" defaultValue={experience?.location ?? ""} className={inputClass} />
 					</div>
 				</div>
 
 				<div className="grid grid-cols-2 gap-4">
 					<div>
-						<label className={labelClass}>Responsibilities (PT)</label>
+						<label htmlFor={`${fieldId}-responsibilities_pt`} className={labelClass}>Responsibilities (PT)</label>
 						<textarea
+							id={`${fieldId}-responsibilities_pt`}
 							name="responsibilities_pt"
 							rows={16}
 							defaultValue={(experience?.responsibilities_pt ?? []).join("\n")}
@@ -142,8 +149,9 @@ export function ExperiencePanelContent({ experience, onClose }: Props) {
 						/>
 					</div>
 					<div>
-						<label className={labelClass}>Responsibilities (EN)</label>
+						<label htmlFor={`${fieldId}-responsibilities_en`} className={labelClass}>Responsibilities (EN)</label>
 						<textarea
+							id={`${fieldId}-responsibilities_en`}
 							name="responsibilities_en"
 							rows={16}
 							defaultValue={(experience?.responsibilities_en ?? []).join("\n")}
@@ -154,8 +162,8 @@ export function ExperiencePanelContent({ experience, onClose }: Props) {
 				</div>
 
 				<div>
-					<label className={labelClass}>Stack</label>
-					<TagInput name="stack" defaultValue={experience?.stack ?? []} suggestions={stacks} placeholder="add technology, press enter" />
+					<label htmlFor={`${fieldId}-stack`} className={labelClass}>Stack</label>
+					<TagInput id={`${fieldId}-stack`} name="stack" defaultValue={experience?.stack ?? []} suggestions={stacks} placeholder="add technology, press enter" />
 				</div>
 			</div>
 

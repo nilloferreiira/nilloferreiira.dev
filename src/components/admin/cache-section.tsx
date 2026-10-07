@@ -8,7 +8,7 @@ import { RefreshCw } from "lucide-react"
 type Scope = "all" | "projects" | "experiences" | "cv"
 
 const SCOPES: { scope: Scope; label: string; queryKeys: string[] }[] = [
-	{ scope: "all", label: "Invalidate all", queryKeys: ["projects", "experiences", "cv", "stacks"] },
+	{ scope: "all", label: "Invalidate all", queryKeys: ["projects", "experiences", "cv", "stacks", "profile-picture"] },
 	{ scope: "projects", label: "Projects", queryKeys: ["projects"] },
 	{ scope: "experiences", label: "Experiences", queryKeys: ["experiences"] },
 	{ scope: "cv", label: "CVs", queryKeys: ["cv"] }

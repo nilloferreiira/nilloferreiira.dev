@@ -2,18 +2,16 @@
 
 import { About } from "@/components/about/about"
 import { Contact } from "@/components/contact/contact"
-import { Education } from "@/components/education/education"
+import { Demos } from "@/components/demos/demos"
+import { EducationNow } from "@/components/education-now/education-now"
 import { ExperienceContainer } from "@/components/experiences/experiences-container"
 import { Header } from "@/components/header/header"
 import { Navbar } from "@/components/navbar/navbar"
-import { Now } from "@/components/now/now"
 import { ProjectContainer } from "@/components/projects/projects-container"
 import { Stack } from "@/components/stack/stack"
 import { useExperiences } from "@/hooks/experiences/useExperiences"
-import { useProjects } from "@/hooks/projects/useProjects"
 
 export default function Home() {
-	const { data: projects, isLoading: isLoadingProjects } = useProjects()
 	const { data: experiences, isLoading: isLoadingExperiences } = useExperiences()
 	return (
 		<div className="min-h-screen relative">
@@ -21,13 +19,13 @@ export default function Home() {
 			<Header />
 			<main className="w-full flex flex-col">
 				<About />
+				<Demos />
 				<Stack />
 				<ExperienceContainer experiences={experiences ?? []} isLoading={isLoadingExperiences} />
-				<ProjectContainer projects={projects ?? []} isLoading={isLoadingProjects} />
-				<Education />
-				<Now />
-				<Contact />
+				<ProjectContainer />
+				<EducationNow />
 			</main>
+			<Contact />
 		</div>
 	)
 }

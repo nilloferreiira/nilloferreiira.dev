@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useId, useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { queryClient } from "@/lib/react-query"
 import { Project, ProjectInput } from "@/types/project/project"
@@ -18,6 +18,7 @@ const inputClass =
 const labelClass = "block text-sm font-medium text-white/40 mb-2 uppercase tracking-wider"
 
 export function ProjectPanelContent({ project, onClose }: Props) {
+	const fieldId = useId()
 	const isEdit = project !== null
 	const [imgSrc, setImgSrc] = useState(project?.imgSrc ?? "")
 	const { data: stacks = [] } = useStacks()
@@ -64,13 +65,14 @@ export function ProjectPanelContent({ project, onClose }: Props) {
 		<form onSubmit={handleSubmit} className="flex flex-col min-h-full">
 			<div className="flex-1 px-7 py-6 space-y-6">
 				<div>
-					<label className={labelClass}>Title</label>
-					<input name="title" required defaultValue={project?.title ?? ""} className={inputClass} />
+					<label htmlFor={`${fieldId}-title`} className={labelClass}>Title</label>
+					<input id={`${fieldId}-title`} name="title" required defaultValue={project?.title ?? ""} className={inputClass} />
 				</div>
 
 				<div>
-					<label className={labelClass}>Description (PT)</label>
+					<label htmlFor={`${fieldId}-description_pt`} className={labelClass}>Description (PT)</label>
 					<textarea
+						id={`${fieldId}-description_pt`}
 						name="description_pt"
 						rows={8}
 						defaultValue={project?.description_pt ?? ""}
@@ -79,8 +81,9 @@ export function ProjectPanelContent({ project, onClose }: Props) {
 				</div>
 
 				<div>
-					<label className={labelClass}>Description (EN)</label>
+					<label htmlFor={`${fieldId}-description_en`} className={labelClass}>Description (EN)</label>
 					<textarea
+						id={`${fieldId}-description_en`}
 						name="description_en"
 						rows={8}
 						defaultValue={project?.description_en ?? ""}
@@ -90,8 +93,9 @@ export function ProjectPanelContent({ project, onClose }: Props) {
 
 				<div className="grid grid-cols-2 gap-4">
 					<div>
-						<label className={labelClass}>Image URL</label>
+						<label htmlFor={`${fieldId}-imgSrc`} className={labelClass}>Image URL</label>
 						<input
+							id={`${fieldId}-imgSrc`}
 							name="imgSrc"
 							defaultValue={project?.imgSrc ?? ""}
 							placeholder="https://..."
@@ -111,15 +115,15 @@ export function ProjectPanelContent({ project, onClose }: Props) {
 						)}
 					</div>
 					<div>
-						<label className={labelClass}>Project URL</label>
-						<input name="url" defaultValue={project?.url ?? ""} placeholder="https://..." className={inputClass} />
+						<label htmlFor={`${fieldId}-url`} className={labelClass}>Project URL</label>
+						<input id={`${fieldId}-url`} name="url" defaultValue={project?.url ?? ""} placeholder="https://..." className={inputClass} />
 					</div>
 				</div>
 
 				<div className="grid grid-cols-[1fr_2fr] gap-4">
 					<div>
-						<label className={labelClass}>Category</label>
-						<select name="category" defaultValue={project?.category ?? "personal"} className={inputClass}>
+						<label htmlFor={`${fieldId}-category`} className={labelClass}>Category</label>
+						<select id={`${fieldId}-category`} name="category" defaultValue={project?.category ?? "personal"} className={inputClass}>
 							<option value="personal" className="bg-[#1a1f2e] text-white">Personal</option>
 							<option value="freelance" className="bg-[#1a1f2e] text-white">Freelance</option>
 							<option value="work" className="bg-[#1a1f2e] text-white">Work</option>
@@ -127,8 +131,8 @@ export function ProjectPanelContent({ project, onClose }: Props) {
 						</select>
 					</div>
 					<div>
-						<label className={labelClass}>Tags</label>
-						<TagInput name="tags" defaultValue={project?.tags ?? []} suggestions={stacks} placeholder="add tag, press enter" />
+						<label htmlFor={`${fieldId}-tags`} className={labelClass}>Tags</label>
+						<TagInput id={`${fieldId}-tags`} name="tags" defaultValue={project?.tags ?? []} suggestions={stacks} placeholder="add tag, press enter" />
 					</div>
 				</div>
 			</div>

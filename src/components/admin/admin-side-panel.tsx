@@ -1,7 +1,7 @@
 "use client"
 
 import { X } from "lucide-react"
-import { useEffect } from "react"
+import { useEffect, useId } from "react"
 import React from "react"
 
 interface AdminSidePanelProps {
@@ -12,6 +12,7 @@ interface AdminSidePanelProps {
 }
 
 export function AdminSidePanel({ isOpen, title, onClose, children }: AdminSidePanelProps) {
+	const titleId = useId()
 	useEffect(() => {
 		if (!isOpen) return
 		const handler = (e: KeyboardEvent) => {
@@ -24,20 +25,28 @@ export function AdminSidePanel({ isOpen, title, onClose, children }: AdminSidePa
 	return (
 		<>
 			<div
+				aria-hidden="true"
 				onClick={onClose}
 				className={`fixed inset-0 z-10 bg-black/65 transition-opacity duration-300 ease-out ${
 					isOpen ? "opacity-100" : "pointer-events-none opacity-0"
 				}`}
 			/>
 			<div
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby={titleId}
+				aria-hidden={!isOpen}
+				inert={!isOpen}
 				className={`fixed top-0 right-0 bottom-0 z-20 w-full lg:w-[min(1100px,95vw)] flex flex-col bg-shark shadow-[-20px_0_60px_rgba(0,0,0,0.5)] transition-transform duration-300 ease-out ${
 					isOpen ? "translate-x-0" : "translate-x-full"
 				}`}
 			>
 				<header className="flex items-center justify-between px-7 py-5 border-b border-white/10 flex-shrink-0">
-					<h2 className="text-base font-semibold text-white">{title}</h2>
+					<h2 id={titleId} className="text-base font-semibold text-white">{title}</h2>
 					<button
+						type="button"
 						onClick={onClose}
+						aria-label="Close panel"
 						className="p-2 rounded-lg hover:bg-white/5 text-white/40 hover:text-white transition"
 					>
 						<X size={18} />
