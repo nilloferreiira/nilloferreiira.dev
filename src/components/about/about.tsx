@@ -11,11 +11,14 @@ import { Clock } from "./clock"
 const copy = {
 	en: {
 		kicker: "about",
-		heading: "I'm a fullstack developer.",
-		emphasis: "End-to-end on production platforms, from system design to long-term ownership.",
-		body: "At Bonsae, I build and maintain features across an educational platform serving 3,000+ concurrent users on 50+ active instances, moving between PHP/Laravel backend services and Node.js APIs. I work AI-first, using Spec-Driven Development to keep AI-assisted work disciplined and production-grade, not a shortcut.",
+		heading: "Software Engineer focused on architecture and AI in production.",
+		emphasis: "I build intelligent products that work.",
+		paragraphs: [
+			"Automation that saves time, systems that scale, code that lasts. Backend (Node.js, PHP/Laravel), frontend (React, Next.js), AI integrated in ways that deliver real results.",
+			"At Bonsae, I cut the time writers spend on research and writing down to just 10 minutes of review and publishing. I turned a manual process into an intelligent content machine. Solid architecture, code that lasts, products that grow with you."
+		],
 		facts: [
-			["degree", "Systems Dev · 2024"],
+			["degree", "Systems Dev · 2025"],
 			["english", "B2 · EF SET"],
 			["current", "Bonsae · Fullstack"],
 			["based", "Brazil · remote"]
@@ -24,11 +27,14 @@ const copy = {
 	},
 	"pt-BR": {
 		kicker: "sobre",
-		heading: "Sou desenvolvedor fullstack.",
-		emphasis: "De ponta a ponta em plataformas em produção, da arquitetura à manutenção de longo prazo.",
-		body: "Na Bonsae, construo e mantenho features em uma plataforma educacional que atende mais de 3.000 usuários simultâneos em mais de 50 instâncias ativas, transitando entre serviços backend em PHP/Laravel e APIs em Node.js. Trabalho AI-first, usando Spec-Driven Development pra manter o trabalho assistido por IA disciplinado e pronto pra produção, não como atalho.",
+		heading: "Software Engineer com foco em arquitetura e IA em produção.",
+		emphasis: "Construo produtos inteligentes que funcionam.",
+		paragraphs: [
+			"Automação que economiza tempo, sistemas que crescem, código que dura. Backend (Node.js, PHP/Laravel), frontend (React, Next.js), IA integrada de forma que traga resultado real.",
+			"Na Bonsae, reduzi o tempo que redatores gastam em pesquisa e escrita para apenas 10 minutos em revisão e publicação. Transformei um processo manual em uma máquina de conteúdo inteligente. Arquitetura sólida, código que dura, produtos que crescem com você."
+		],
 		facts: [
-			["formação", "ADS · 2024"],
+			["formação", "ADS · 2025"],
 			["inglês", "B2 · EF SET"],
 			["atual", "Bonsae · Fullstack"],
 			["base", "Brasil · remoto"]
@@ -71,9 +77,13 @@ export function About() {
 								{t.emphasis}
 							</em>
 						</h2>
-						<p className="mt-[clamp(24px,3vw,40px)] max-w-[720px] text-v-dim text-[clamp(16px,1.3vw,19px)] leading-[1.7] text-pretty">
-							{t.body}
-						</p>
+						<div className="mt-[clamp(24px,3vw,40px)] flex flex-col gap-4">
+							{t.paragraphs.map((paragraph) => (
+								<p key={paragraph} className="m-0 max-w-[720px] text-v-dim text-[clamp(16px,1.3vw,19px)] leading-[1.7] text-pretty">
+									{paragraph}
+								</p>
+							))}
+						</div>
 						<div className="mt-[clamp(32px,4vw,56px)] grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] max-[680px]:grid-cols-2 border-t border-v-line">
 							{t.facts.map(([k, v]) => (
 								<div key={k} className="flex flex-col gap-1.5 py-[18px] pr-4">

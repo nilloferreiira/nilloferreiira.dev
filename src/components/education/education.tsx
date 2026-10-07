@@ -7,17 +7,19 @@ const copy = {
 	en: {
 		file: "education.json",
 		items: [
-			{ title: "Systems Analysis & Development", org: "Associate Degree", period: "2021 — 2024" },
-			{ title: "Full-Stack Bootcamp", org: "Rocketseat — Ignite", period: "2023" },
-			{ title: "English B2 — Upper Intermediate", org: "EF SET Certified", period: "2024" }
+			{ title: "Postgraduate in Applied AI Engineering", org: "Specialization", period: "2026 — 2027" },
+			{ title: "Systems Analysis & Development", org: "Associate Degree", period: "2023 — 2025" },
+			{ title: "English B2 — Upper Intermediate", org: "EF SET Certified", period: "2024" },
+			{ title: "Full-Stack Bootcamp", org: "Rocketseat — Ignite", period: "2023" }
 		]
 	},
 	"pt-BR": {
 		file: "formação.json",
 		items: [
-			{ title: "Análise e Desenvolvimento de Sistemas", org: "Tecnólogo", period: "2021 — 2024" },
-			{ title: "Bootcamp Full-Stack", org: "Rocketseat — Ignite", period: "2023" },
-			{ title: "Inglês B2 — Intermediário Avançado", org: "EF SET Certified", period: "2024" }
+			{ title: "Pós-graduação em Engenharia de IA Aplicada", org: "Especialização", period: "2026 — 2027" },
+			{ title: "Análise e Desenvolvimento de Sistemas", org: "Tecnólogo", period: "2023 — 2025" },
+			{ title: "Inglês B2 — Intermediário Avançado", org: "EF SET Certified", period: "2024" },
+			{ title: "Bootcamp Full-Stack", org: "Rocketseat — Ignite", period: "2023" }
 		]
 	}
 }

@@ -11,10 +11,9 @@ import { HeroStats } from "./hero-stats"
 const copy = {
 	en: {
 		available: "Available for new projects",
-		headline: "I build web products, from database to pixel.",
+		headline: "Software Engineer. Focus on Architecture & AI.",
 		role: "Software Engineer",
-		tagline:
-			"Solid APIs, calm interfaces, and code that ages well. Backend-focused, without losing sight of product.",
+		tagline: "Solid architecture. Code that lasts. Disciplined AI. Full ownership, from design to maintenance.",
 		cta: "Get in touch",
 		scroll: "scroll to explore",
 		stats: [
@@ -26,10 +25,9 @@ const copy = {
 	},
 	"pt-BR": {
 		available: "Disponível para novos projetos",
-		headline: "Construo produtos web, do banco ao pixel.",
+		headline: "Software Engineer. Foco em Arquitetura & IA.",
 		role: "Software Engineer",
-		tagline:
-			"APIs sólidas, interfaces calmas e código que envelhece bem. Foco em backend, sem perder o olho para o produto.",
+		tagline: "Arquitetura sólida. Código que dura. IA disciplinada. Tudo com ownership total, do design à manutenção.",
 		cta: "Me contate",
 		scroll: "role para explorar",
 		stats: [
