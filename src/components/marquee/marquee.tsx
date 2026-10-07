@@ -16,7 +16,7 @@ export function Marquee({ items }: MarqueeProps) {
 		mm.add("(prefers-reduced-motion: no-preference)", () => {
 			const tween = gsap.to(trackRef.current, {
 				xPercent: -50,
-				duration: 22,
+				duration: 30,
 				repeat: -1,
 				ease: "none"
 			})
@@ -34,14 +34,15 @@ export function Marquee({ items }: MarqueeProps) {
 	const doubled = [...items, ...items]
 
 	return (
-		<div className="w-full overflow-hidden border-y border-foreground/[0.06] bg-foreground/[0.02] py-[22px]">
-			<div ref={trackRef} className="flex w-max gap-14">
+		<div className="marq-mask mt-12 overflow-hidden border-y border-v-line py-5" aria-hidden="true">
+			<div ref={trackRef} className="flex w-max gap-12">
 				{doubled.map((item, index) => (
 					<span
 						key={`${item}-${index}`}
-						className="flex items-center gap-3 whitespace-nowrap font-mono text-sm text-foreground-subtle"
+						className="flex items-center gap-12 whitespace-nowrap text-[clamp(22px,3vw,40px)] font-extrabold tracking-[-0.03em] text-v-muted"
 					>
-						{item} <span className="text-muted-foreground">✦</span>
+						{item}
+						<span className="text-v-accent font-normal">/</span>
 					</span>
 				))}
 			</div>

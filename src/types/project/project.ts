@@ -21,3 +21,10 @@ export type ProjectInput = {
 	category: Project["category"]
 	tags: string[]
 }
+
+export type ProjectPage = {
+	data: Project[]
+	total: number
+	nextOffset: number | null
+	tags: StackRef[]
+}

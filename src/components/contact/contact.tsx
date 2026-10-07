@@ -1,84 +1,122 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { Mail, Heart } from "lucide-react"
+import { useEffect, useState } from "react"
+import { FileText, Github, Linkedin } from "lucide-react"
 import { useLanguage } from "@/hooks/useLanguage"
 import { getCvUrl, getCvDownloadName } from "@/lib/cv"
-import { Kicker } from "@/components/ui/kicker"
-import { PillButton } from "@/components/ui/pill-button"
+import { Reveal } from "@/components/ui/reveal"
+import { SectionLabel } from "@/components/ui/section-label"
+import { ChipButton } from "@/components/ui/chip-button"
+import { wrap } from "@/components/ui/section"
+
+const EMAIL = "nilloferreiira@gmail.com"
+
+const copy = {
+	en: {
+		kicker: "contact",
+		title: ["Let's", "talk?"],
+		body: "I'm always open to new opportunities and interesting projects. Drop me a line.",
+		copy: "copy",
+		copied: "copied",
+		cv: "Download PDF",
+		footer: "Made with care · 2026"
+	},
+	"pt-BR": {
+		kicker: "contato",
+		title: ["Vamos", "conversar?"],
+		body: "Estou sempre aberto a novas oportunidades e projetos interessantes. Mande uma mensagem.",
+		copy: "copiar",
+		copied: "copiado",
+		cv: "Baixar PDF",
+		footer: "Feito com cuidado · 2026"
+	}
+}
 
 export function Contact() {
-  const { language } = useLanguage()
+	const { language } = useLanguage()
+	const t = copy[language]
+	const [copied, setCopied] = useState(false)
 
-  const socials = [
-    {
-      label: "GITHUB",
-      value: "github.com/nilloferreiira",
-      href: "https://github.com/nilloferreiira",
-      external: true,
-    },
-    {
-      label: "LINKEDIN",
-      value: "linkedin.com/in/nilloferreiira",
-      href: "https://www.linkedin.com/in/nilloferreiira/",
-      external: true,
-    },
-    {
-      label: language === "pt-BR" ? "CURRÍCULO" : "RESUME",
-      value: language === "pt-BR" ? "Baixar PDF" : "Download PDF",
-      href: getCvUrl(language),
-      external: false,
-    },
-  ]
+	useEffect(() => {
+		if (!copied) return
+		const id = setTimeout(() => setCopied(false), 1600)
+		return () => clearTimeout(id)
+	}, [copied])
 
-  return (
-    <footer className="py-16 px-6 border-t border-border/50" id="contact">
-      <div className="container max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center space-y-6"
-        >
-          <div className="flex justify-center">
-            <Kicker label={language === "pt-BR" ? "Contato" : "Contact"} />
-          </div>
-          <h2 className="text-2xl md:text-3xl font-bold gradient-text">
-            {language === "pt-BR" ? "Vamos conversar?" : "Let's talk?"}
-          </h2>
-          <p className="text-muted-foreground max-w-md mx-auto">
-            {language === "pt-BR"
-              ? "Estou sempre aberto a novas oportunidades e projetos interessantes."
-              : "I'm always open to new opportunities and interesting projects."}
-          </p>
+	async function copyEmail() {
+		try {
+			await navigator.clipboard.writeText(EMAIL)
+			setCopied(true)
+		} catch {}
+	}
 
-          <div className="flex justify-center">
-            <PillButton href="mailto:nilloferreiira@gmail.com" icon={<Mail size={18} />}>
-              {language === "pt-BR" ? "Enviar email" : "Send email"}
-            </PillButton>
-          </div>
+	const socials = [
+		{
+			label: "GitHub",
+			handle: "@nilloferreiira",
+			icon: <Github size={16} />,
+			props: { href: "https://github.com/nilloferreiira", target: "_blank", rel: "noopener noreferrer" }
+		},
+		{
+			label: "LinkedIn",
+			handle: "/in/nilloferreiira",
+			icon: <Linkedin size={16} />,
+			props: { href: "https://www.linkedin.com/in/nilloferreiira/", target: "_blank", rel: "noopener noreferrer" }
+		},
+		{
+			label: "CV",
+			handle: t.cv,
+			icon: <FileText size={16} />,
+			props: { href: getCvUrl(language), download: getCvDownloadName(language) }
+		}
+	]
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 pt-4">
-            {socials.map(({ label, value, href, external }) => (
-              <a
-                key={label}
-                href={href}
-                {...(external ? { target: "_blank", rel: "noopener noreferrer" } : { download: getCvDownloadName(language) })}
-                className="flex flex-col items-center gap-1 group"
-              >
-                <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">{label}</span>
-                <span className="text-sm text-foreground group-hover:text-primary transition-colors">{value}</span>
-              </a>
-            ))}
-          </div>
+	return (
+		<footer id="contact" className="v-sec border-t border-v-line pt-[clamp(72px,10vw,140px)] transition-colors">
+			<div className={wrap}>
+				<SectionLabel index="07" path={t.kicker} className="after:hidden" />
+				<Reveal>
+					<h2 className="m-0 text-[clamp(52px,10vw,160px)] font-extrabold tracking-[-0.055em] leading-[0.92] text-v-text">
+						{t.title[0]} <span className="grad">{t.title[1]}</span>
+					</h2>
+				</Reveal>
+				<Reveal delay={0.1}>
+					<p className="mt-6 max-w-[560px] text-v-dim text-[clamp(16px,1.4vw,19px)] leading-[1.65]">{t.body}</p>
 
-          <p className="text-xs text-muted-foreground pt-8 flex items-center justify-center gap-1">
-            {language === "pt-BR" ? "Feito com" : "Made with"}
-            <Heart size={12} className="text-neon-pink" />
-            {language === "pt-BR" ? "por Danillo" : "by Danillo"}
-          </p>
-        </motion.div>
-      </div>
-    </footer>
-  )
+					<div className="mt-[clamp(28px,4vw,48px)] flex flex-wrap items-center gap-4">
+						<a
+							href={`mailto:${EMAIL}`}
+							className="text-[clamp(20px,2.6vw,34px)] font-bold tracking-[-0.02em] text-v-text border-b-2 border-v-accent pb-1 break-all hover:text-v-accent transition-colors"
+						>
+							{EMAIL}
+						</a>
+						<ChipButton onClick={copyEmail} aria-live="polite">
+							{copied ? `✓ ${t.copied}` : t.copy}
+						</ChipButton>
+					</div>
+
+					<div className="mt-12 grid grid-cols-3 max-[680px]:grid-cols-1 border-t border-v-line">
+						{socials.map((social) => (
+							<a
+								key={social.label}
+								{...social.props}
+								className="flex justify-between items-center gap-3 py-[22px] pr-5 border-b border-v-line text-v-text hover:text-v-accent transition-colors"
+							>
+								<span className="flex items-center gap-2.5 font-bold">
+									{social.icon}
+									{social.label}
+								</span>
+								<small className="font-mono text-xs text-v-muted">{social.handle}</small>
+							</a>
+						))}
+					</div>
+				</Reveal>
+
+				<div className="flex flex-wrap justify-between gap-4 pt-7 pb-10 font-mono text-xs text-v-muted">
+					<span>~/danilloferreira</span>
+					<span>{t.footer}</span>
+				</div>
+			</div>
+		</footer>
+	)
 }

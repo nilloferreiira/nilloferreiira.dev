@@ -7,6 +7,20 @@ import { db } from "@/lib/db"
 import { syncProjectStackLinks, loadProjectStackRefs } from "@/db/stack-helpers"
 import { isNull, eq, asc, inArray } from "drizzle-orm"
 import { PROJECTS_CACHE_TAG } from "@/lib/cache-tags"
+import { z } from "zod"
+
+const MAX_PAGE_SIZE = 50
+
+const pageQuerySchema = z.object({
+	limit: z.coerce.number().int().min(1).max(MAX_PAGE_SIZE),
+	offset: z.coerce.number().int().min(0).default(0),
+	category: z.enum(["personal", "freelance", "work", "evento"]).optional(),
+	// comma-separated stack ids; a project must have all of them
+	tags: z
+		.string()
+		.optional()
+		.transform((v) => (v ? v.split(",").map(Number).filter(Number.isInteger) : []))
+})
 
 const getCachedProjects = unstable_cache(
 	async () => {
@@ -42,10 +56,32 @@ const getCachedProjects = unstable_cache(
 	{ tags: [PROJECTS_CACHE_TAG], revalidate: false }
 )
 
-export async function GET() {
+// GET /api/projects            → every project (used by the admin to reorder)
+// GET /api/projects?limit=15&offset=0[&category=personal&tags=1,2]
+//                               → one page + total + nextOffset + the tags used across all projects
+export async function GET(request: NextRequest) {
 	try {
 		const projects = await getCachedProjects()
-		return NextResponse.json({ ok: true, data: projects })
+		const params = Object.fromEntries(request.nextUrl.searchParams)
+
+		if (params.limit === undefined) return NextResponse.json({ ok: true, data: projects })
+
+		const parsed = pageQuerySchema.safeParse(params)
+		if (!parsed.success) {
+			return NextResponse.json({ ok: false, error: "Parâmetros de paginação inválidos" }, { status: 400 })
+		}
+		const { limit, offset, category, tags } = parsed.data
+
+		// Pages are sliced from the cached list, so paging never hits the DB again until the cache tag is revalidated
+		const filtered = projects.filter(
+			(p) =>
+				(!category || p.category === category) && tags.every((id) => p.tags.some((tag) => tag.id === id))
+		)
+		const data = filtered.slice(offset, offset + limit)
+		const nextOffset = offset + data.length < filtered.length ? offset + data.length : null
+		const availableTags = Array.from(new Map(projects.flatMap((p) => p.tags).map((t) => [t.id, t])).values())
+
+		return NextResponse.json({ ok: true, data, total: filtered.length, nextOffset, tags: availableTags })
 	} catch (err) {
 		console.error("GET /api/projects error:", err)
 		return NextResponse.json({ ok: false, error: "Erro ao buscar projetos" }, { status: 500 })
