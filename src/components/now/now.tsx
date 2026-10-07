@@ -8,16 +8,18 @@ const copy = {
 		file: "now.md",
 		body: "Updated September 2026.",
 		items: [
-			{ label: "Studying", values: ["Postgraduate in Applied AI Engineering", "AWS Certified Solutions Architect – Associate"] },
-			{ label: "Building", values: ["Contai, a personal finance app"] }
+			{ label: "Studying", value: "Postgraduate in Applied AI Engineering" },
+			{ label: "Studying", value: "AWS Certified Solutions Architect – Associate" },
+			{ label: "Building", value: "Contai, a personal finance app" }
 		]
 	},
 	"pt-BR": {
 		file: "agora.md",
 		body: "Atualizado em setembro de 2026.",
 		items: [
-			{ label: "Estudando", values: ["Pós-graduação em Engenharia de IA Aplicada", "AWS Certified Solutions Architect – Associate"] },
-			{ label: "Construindo", values: ["Contai, um app de finanças pessoais"] }
+			{ label: "Estudando", value: "Pós-graduação em Engenharia de IA Aplicada" },
+			{ label: "Estudando", value: "AWS Certified Solutions Architect – Associate" },
+			{ label: "Construindo", value: "Contai, um app de finanças pessoais" }
 		]
 	}
 }
@@ -33,14 +35,10 @@ export function Now() {
 				<span>{t.body}</span>
 			</div>
 			{t.items.map((item) => (
-				<div key={item.label} className={listRow}>
+				<div key={item.value} className={listRow}>
 					<div>
 						<small className="block font-mono text-[11px] text-v-muted">{item.label.toLowerCase()}</small>
-						{item.values.map((value) => (
-							<b key={value} className="block text-[15px] text-v-text">
-								{value}
-							</b>
-						))}
+						<b className="block text-[15px] text-v-text">{item.value}</b>
 					</div>
 				</div>
 			))}
