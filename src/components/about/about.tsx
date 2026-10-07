@@ -3,6 +3,8 @@
 import Image from "next/image"
 import { Github } from "lucide-react"
 import { useLanguage } from "@/hooks/useLanguage"
+import { useProfilePicture } from "@/hooks/profile-picture/useProfilePicture"
+import { FALLBACK_PHOTO_URL } from "@/lib/profile-picture"
 import { Reveal } from "@/components/ui/reveal"
 import { SectionLabel } from "@/components/ui/section-label"
 import { wrap } from "@/components/ui/section"
@@ -46,6 +48,9 @@ const copy = {
 export function About() {
 	const { language } = useLanguage()
 	const t = copy[language]
+	const { data: photo, isError } = useProfilePicture()
+	// wait for the API instead of showing the fallback first and swapping it
+	const photoUrl = photo?.url ?? (isError ? FALLBACK_PHOTO_URL : null)
 
 	return (
 		<section id="about" className="v-sec border-t border-v-line py-[clamp(72px,10vw,140px)] transition-colors">
@@ -54,14 +59,21 @@ export function About() {
 				<div className="grid grid-cols-[minmax(0,5fr)_minmax(0,7fr)] max-[1080px]:grid-cols-[minmax(0,4fr)_minmax(0,6fr)] max-[1080px]:items-start max-[680px]:grid-cols-1 gap-[clamp(32px,5vw,96px)] items-center">
 					<Reveal>
 						<figure className="group m-0 px-2.5 pt-2.5 rounded-[18px] border border-v-line2 bg-v-panel max-w-[480px] max-[680px]:max-w-[340px] shadow-[12px_12px_0_-1px_var(--soft),12px_12px_0_0_var(--line2)]">
-							<div className="relative rounded-[10px] overflow-hidden aspect-[4/5] max-[680px]:aspect-square bg-v-panel2">
-								<Image
-									src="https://github.com/nilloferreiira.png"
-									alt="Danillo Ferreira"
-									fill
-									sizes="(max-width: 680px) 340px, 480px"
-									className="object-cover grayscale-[0.15] transition-[filter,transform] duration-[500ms,800ms] group-hover:grayscale-0 group-hover:scale-[1.03]"
-								/>
+							<div
+								className={`relative rounded-[10px] overflow-hidden aspect-[4/5] max-[680px]:aspect-square bg-v-panel2 ${
+									photoUrl ? "" : "animate-pulse"
+								}`}
+							>
+								{photoUrl && (
+									<Image
+										key={photoUrl}
+										src={photoUrl}
+										alt="Danillo Ferreira"
+										fill
+										sizes="(max-width: 680px) 340px, 480px"
+										className="object-cover grayscale-[0.15] transition-[filter,transform] duration-[500ms,800ms] group-hover:grayscale-0 group-hover:scale-[1.03]"
+									/>
+								)}
 							</div>
 							<figcaption className="flex items-center gap-2 px-1 py-3 font-mono text-xs text-v-dim">
 								<Github size={13} />

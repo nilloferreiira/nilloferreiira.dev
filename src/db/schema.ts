@@ -71,3 +71,10 @@ export const experienceStacks = pgTable(
 	},
 	(table) => [unique("experience_stacks_experience_id_stack_id_unique").on(table.experienceId, table.stackId)]
 )
+
+// Key/value site configuration editable from the admin (e.g. "about_photo" → file name in the profile_pictures bucket)
+export const siteSettings = pgTable("site_settings", {
+	key: varchar("key").primaryKey(),
+	value: text("value").notNull(),
+	updatedAt: timestamp("updated_at").defaultNow().notNull()
+})

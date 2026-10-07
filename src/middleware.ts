@@ -9,12 +9,19 @@ export async function middleware(request: NextRequest) {
 	const isApiPath = pathname.startsWith("/api/projects") || pathname.startsWith("/api/experiences")
 	const isCvApiPath = pathname.startsWith("/api/cv")
 	const isCacheApiPath = pathname.startsWith("/api/cache")
+	const isProfilePicturePath = pathname.startsWith("/api/profile-picture")
+	const isPublicProfilePictureRead = pathname === "/api/profile-picture" && request.method === "GET"
 
 	// admin pages: every method needs a session (except the login page itself)
 	// projects/experiences api routes: public GET reads stay open, everything else needs a session
 	// cv and cache api routes: no public use case at all, every method needs a session
+	// profile-picture: only GET /api/profile-picture (the photo shown in About) is public; selecting, listing and uploading need a session
 	const requiresAuth =
-		(isAdminPath && !isLoginPath) || (isApiPath && request.method !== "GET") || isCvApiPath || isCacheApiPath
+		(isAdminPath && !isLoginPath) ||
+		(isApiPath && request.method !== "GET") ||
+		isCvApiPath ||
+		isCacheApiPath ||
+		(isProfilePicturePath && !isPublicProfilePictureRead)
 
 	if (!requiresAuth) {
 		return NextResponse.next()
@@ -27,7 +34,7 @@ export async function middleware(request: NextRequest) {
 		return response
 	}
 
-	if (isApiPath || isCvApiPath || isCacheApiPath) {
+	if (isApiPath || isCvApiPath || isCacheApiPath || isProfilePicturePath) {
 		return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 	}
 
@@ -37,5 +44,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ["/admin/:path*", "/api/projects/:path*", "/api/experiences/:path*", "/api/cv/:path*", "/api/cache/:path*"]
+	matcher: ["/admin/:path*", "/api/projects/:path*", "/api/experiences/:path*", "/api/cv/:path*", "/api/cache/:path*", "/api/profile-picture/:path*"]
 }

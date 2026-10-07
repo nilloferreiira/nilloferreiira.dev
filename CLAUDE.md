@@ -36,9 +36,15 @@ This is a **Next.js 15 personal portfolio** with a private admin panel. The app 
 | `/admin` | CRUD dashboard for projects & experiences |
 | `/api/projects` | GET (full list; or a page with `?limit=&offset=&category=&tags=`), POST (create), PUT (update), DELETE |
 | `/api/experiences` | GET (list), POST (create), PUT (update), DELETE |
+| `/api/profile-picture` | GET (public: photo shown in About), PUT `{ name }` (select a bucket image) |
+| `/api/profile-picture/images` | GET (list the `profile_pictures` bucket), POST (upload JPG/PNG/WebP ≤ 5MB) |
 | `/api/sign-in` | POST — authenticates and sets session cookie |
 | `/api/sign-out` | GET — clears session cookie |
 | `/api/session/validate` | GET — validates session from cookie (used by middleware) |
+
+### Site settings & About photo
+
+`site_settings` is a key/value table for admin-editable config. `about_photo` holds the **file name** of the About photo in the public Supabase Storage bucket `profile_pictures`; the URL is built with `getProfilePictureUrl` (`src/lib/profile-picture.ts`) and falls back to the GitHub avatar when unset. Listing/uploading the bucket needs storage policies for `authenticated` (SQL in `src/app/api/profile-picture/route.ts`).
 
 ### Soft deletes
 
