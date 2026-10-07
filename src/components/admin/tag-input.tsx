@@ -5,13 +5,14 @@ import { X } from "lucide-react"
 import { useState } from "react"
 
 interface TagInputProps {
+	id?: string
 	name: string
 	defaultValue?: StackRef[]
 	suggestions: StackRef[]
 	placeholder?: string
 }
 
-export function TagInput({ name, defaultValue = [], suggestions, placeholder }: TagInputProps) {
+export function TagInput({ id, name, defaultValue = [], suggestions, placeholder }: TagInputProps) {
 	const [chips, setChips] = useState<string[]>(defaultValue.map((s) => s.name))
 	const [draft, setDraft] = useState("")
 	const [showSuggestions, setShowSuggestions] = useState(false)
@@ -70,6 +71,7 @@ export function TagInput({ name, defaultValue = [], suggestions, placeholder }: 
 						<button
 							type="button"
 							onClick={() => removeChip(i)}
+							aria-label={`Remove ${chip}`}
 							className="text-white/40 hover:text-white transition px-1"
 						>
 							<X size={13} />
@@ -77,6 +79,7 @@ export function TagInput({ name, defaultValue = [], suggestions, placeholder }: 
 					</span>
 				))}
 				<input
+					id={id}
 					value={draft}
 					onChange={(e) => {
 						setDraft(e.target.value)

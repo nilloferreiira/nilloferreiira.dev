@@ -60,6 +60,7 @@ export function Modal({
 		<div className="fixed inset-0 z-50 flex items-center justify-center" aria-modal="true" role="dialog">
 			{/* overlay */}
 			<div
+				aria-hidden="true"
 				className="absolute inset-0 bg-black/50 backdrop-blur-sm"
 				onClick={() => {
 					if (closeOnOverlayClick) {
@@ -78,10 +79,7 @@ export function Modal({
 
 			{/* panel */}
 			<div className="relative w-full max-w-2xl mx-4">
-				<div
-					className="bg-bg rounded-2xl shadow-lg ring-1 ring-white/5 overflow-hidden"
-					onClick={(e) => e.stopPropagation()}
-				>
+				<div className="bg-bg rounded-2xl shadow-lg ring-1 ring-white/5 overflow-hidden">
 					<header className="flex items-center justify-between p-4 border-b border-white/5">
 						<div className="flex items-center gap-3">
 							<h3 className="text-lg font-semibold text-white">{title}</h3>

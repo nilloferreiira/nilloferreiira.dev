@@ -61,7 +61,7 @@ export function ProjectModal({ project, language, onClose }: ProjectModalProps) 
 					exit={{ opacity: 0 }}
 					transition={{ duration: 0.2 }}
 				>
-					<div className="absolute inset-0 bg-black/65 backdrop-blur-sm" onClick={onClose} />
+					<div aria-hidden="true" className="absolute inset-0 bg-black/65 backdrop-blur-sm" onClick={onClose} />
 
 					<motion.div
 						className="relative w-full max-w-[640px] max-h-[85vh] overflow-y-auto rounded-2xl border border-v-line2 bg-v-bg2 shadow-[0_30px_80px_rgba(0,0,0,0.5)]"

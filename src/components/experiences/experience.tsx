@@ -35,10 +35,11 @@ export function Experience({ experience, language, current }: ExperienceProps) {
 			</div>
 
 			<div>
+				{/* company is optional in the DB: fall back to the role as the heading */}
 				<h3 className="m-0 text-[clamp(24px,2.4vw,32px)] font-bold tracking-[-0.025em] text-v-text">
-					{experience.company}
+					{experience.company || title}
 				</h3>
-				<div className="mt-1 font-mono text-[13px] text-v-accent">{title}</div>
+				{experience.company && <div className="mt-1 font-mono text-[13px] text-v-accent">{title}</div>}
 				{descriptionLines.map((line, i) => (
 					<p key={i} className="mt-3.5 mb-3 text-v-dim text-[15px] leading-[1.6] text-pretty">
 						{line}
