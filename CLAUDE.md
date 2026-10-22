@@ -46,6 +46,10 @@ This is a **Next.js 15 personal portfolio** with a private admin panel. The app 
 
 `site_settings` is a key/value table for admin-editable config. `about_photo` holds the **file name** of the About photo in the public Supabase Storage bucket `profile_pictures`; the URL is built with `getProfilePictureUrl` (`src/lib/profile-picture.ts`) and falls back to the GitHub avatar when unset. Listing/uploading the bucket needs storage policies for `authenticated` (SQL in `src/app/api/profile-picture/route.ts`).
 
+### Row Level Security (required for every new table)
+
+Every table in `public` is exposed by Supabase's REST API (PostgREST), so **every new table must enable RLS** — otherwise anyone with the publishable key can read and write it. In `src/db/schema.ts`, chain `.enableRLS()` on the `pgTable(...)` and add a policy in the extra-config array; use the `publicRead("<table>")` helper for public read-only access (SELECT for `anon`, `authenticated`). Don't add write policies: the app writes through Drizzle (`DATABASE_URL`), which bypasses RLS. Check the generated migration contains `ENABLE ROW LEVEL SECURITY` + `CREATE POLICY`. `projects`/`experiences` had RLS set in the Supabase dashboard (not in the schema).
+
 ### Soft deletes
 
 Projects and experiences have a `deletedAt` column. Filter by `deletedAt IS NULL` when querying — the API routes should already do this.
