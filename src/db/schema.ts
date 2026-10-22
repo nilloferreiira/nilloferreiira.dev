@@ -1,4 +1,14 @@
-import { pgTable, text, varchar, timestamp, serial, integer, unique } from "drizzle-orm/pg-core"
+import { sql } from "drizzle-orm"
+import { pgTable, pgPolicy, text, varchar, timestamp, serial, integer, unique } from "drizzle-orm/pg-core"
+import { anonRole, authenticatedRole } from "drizzle-orm/supabase"
+
+// Public (anon + authenticated) can only read through the Supabase API; writes go through Drizzle, which bypasses RLS
+const publicRead = (table: string) =>
+	pgPolicy(`Public read access to ${table}`, {
+		for: "select",
+		to: [anonRole, authenticatedRole],
+		using: sql`true`
+	})
 
 export const projects = pgTable("projects", {
 	id: serial("id").primaryKey(),
@@ -39,8 +49,8 @@ export const stacks = pgTable(
 		name: varchar("name").notNull(),
 		createdAt: timestamp("created_at").defaultNow().notNull()
 	},
-	(table) => [unique("stacks_name_unique").on(table.name)]
-)
+	(table) => [unique("stacks_name_unique").on(table.name), publicRead("stacks")]
+).enableRLS()
 
 export const projectStacks = pgTable(
 	"project_stacks",
@@ -54,8 +64,11 @@ export const projectStacks = pgTable(
 			.references(() => stacks.id, { onDelete: "cascade" }),
 		createdAt: timestamp("created_at").defaultNow().notNull()
 	},
-	(table) => [unique("project_stacks_project_id_stack_id_unique").on(table.projectId, table.stackId)]
-)
+	(table) => [
+		unique("project_stacks_project_id_stack_id_unique").on(table.projectId, table.stackId),
+		publicRead("project_stacks")
+	]
+).enableRLS()
 
 export const experienceStacks = pgTable(
 	"experience_stacks",
@@ -69,12 +82,19 @@ export const experienceStacks = pgTable(
 			.references(() => stacks.id, { onDelete: "cascade" }),
 		createdAt: timestamp("created_at").defaultNow().notNull()
 	},
-	(table) => [unique("experience_stacks_experience_id_stack_id_unique").on(table.experienceId, table.stackId)]
-)
+	(table) => [
+		unique("experience_stacks_experience_id_stack_id_unique").on(table.experienceId, table.stackId),
+		publicRead("experience_stacks")
+	]
+).enableRLS()
 
 // Key/value site configuration editable from the admin (e.g. "about_photo" → file name in the profile_pictures bucket)
-export const siteSettings = pgTable("site_settings", {
-	key: varchar("key").primaryKey(),
-	value: text("value").notNull(),
-	updatedAt: timestamp("updated_at").defaultNow().notNull()
-})
+export const siteSettings = pgTable(
+	"site_settings",
+	{
+		key: varchar("key").primaryKey(),
+		value: text("value").notNull(),
+		updatedAt: timestamp("updated_at").defaultNow().notNull()
+	},
+	() => [publicRead("site_settings")]
+).enableRLS()
